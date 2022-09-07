@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace MuseServer // Note: actual namespace depends on the project name.
+namespace MuseServer
 {
     internal class Program
     {
