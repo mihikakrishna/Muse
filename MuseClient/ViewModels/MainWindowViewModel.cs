@@ -1,4 +1,5 @@
 using MuseClient.Stores;
+using ReactiveUI;
 
 namespace MuseClient.ViewModels;
 
@@ -11,5 +12,11 @@ public class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(NavigationStore navigationStore)
     {
         _navigationStore = navigationStore;
+        _navigationStore.CurrentViewModelIsChanged += OnCurrentViewModelChanged;
+    }
+
+    private void OnCurrentViewModelChanged()
+    {
+        this.RaisePropertyChanged(nameof(CurrentViewModel));
     }
 }

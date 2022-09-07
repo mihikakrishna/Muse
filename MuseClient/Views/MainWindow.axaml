@@ -11,10 +11,10 @@
         <ContentControl Content="{Binding CurrentViewModel}">
                 <ContentControl.DataTemplates>
                         <DataTemplate DataType="{x:Type vm:HomeWindowViewModel}">
-                                <views:HomeWindow/>
+                                <views:HomeWindow DataContext="{Binding}"/>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type vm:JoinRoomWindowViewModel}">
-                                <views:JoinRoomWindow/>
+                                <views:JoinRoomWindow DataContext="{Binding}"/>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type vm:CreateRoomWindowViewModel}">
                                 <views:CreateRoomWindow/>

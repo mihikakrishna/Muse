@@ -8,5 +8,11 @@
         <TextBlock>
             Join Room Page
         </TextBlock>
+        <Button Command="{Binding SwitchPage}" 
+                CommandParameter="HomePage" 
+                Content="Go back" />
+        <Button Command="{Binding SwitchPage}" 
+                CommandParameter="ListenTogetherPage" 
+                Content="Go to shared room" />
     </StackPanel>
 </UserControl>

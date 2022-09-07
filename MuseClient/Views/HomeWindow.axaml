@@ -8,5 +8,11 @@
         <TextBlock>
             Home Page
         </TextBlock>
+        <Button Command="{Binding SwitchPage}" 
+                CommandParameter="JoinRoomPage" 
+                Content="Join Room" />
+        <Button Command="{Binding SwitchPage}" 
+                CommandParameter="CreateRoomPage" 
+                Content="Create Room" />
     </StackPanel>
 </UserControl>
