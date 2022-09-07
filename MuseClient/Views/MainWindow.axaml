@@ -3,15 +3,25 @@
         xmlns:vm="using:MuseClient.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:MuseClient.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MuseClient.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="MuseClient">
-
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+        <ContentControl Content="{Binding CurrentViewModel}">
+                <ContentControl.DataTemplates>
+                        <DataTemplate DataType="{x:Type vm:HomeWindowViewModel}">
+                                <views:HomeWindow/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:JoinRoomWindowViewModel}">
+                                <views:JoinRoomWindow/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:CreateRoomWindowViewModel}">
+                                <views:CreateRoomWindow/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:ListenTogetherWindowViewModel}">
+                                <views:ListenTogetherWindow/>
+                        </DataTemplate>
+                </ContentControl.DataTemplates>
+        </ContentControl>
 </Window>
