@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MuseClient.ViewModels
+namespace MuseClient.ViewModels;
+
+public class MainWindowViewModel : ViewModelBase
 {
-    public class MainWindowViewModel : ViewModelBase
-    {
-        public string Greeting => "Welcome to Avalonia!";
-    }
+    public string Greeting => "Welcome to Avalonia!";
 }
