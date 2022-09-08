@@ -14,7 +14,6 @@ namespace MuseClient.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         public ChatViewModel ChatViewModel { get; set; }
-        public ObservableCollection<string> Greeting { get; set; }
         public MainWindowViewModel(ChatViewModel chatViewModel)
         {
             ChatViewModel = chatViewModel;
