@@ -8,6 +8,9 @@
 		<TextBlock>
 			Chat Page
 		</TextBlock>
+		<Button Command="{Binding SwitchPage}"
+                CommandParameter="ListenTogetherPage"
+                Content="ListenTogether" />
 		<Button Command="{Binding SendChatMessageCommand}"
                 Content="Send Message" />
 	</StackPanel>

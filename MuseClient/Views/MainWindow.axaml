@@ -3,16 +3,28 @@
         xmlns:vm="using:MuseClient.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:views="clr-namespace:MuseClient.Views"
+        xmlns:views="clr-namespace:MuseClient.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MuseClient.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="MuseClient">
-	<Grid>
-		<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-			<views:ChatView Margin="10" DataContext="{Binding ChatViewModel}" />
-		</ScrollViewer>
-	</Grid>
-	
-
+        <ContentControl Content="{Binding CurrentViewModel}">
+                <ContentControl.DataTemplates>
+                        <DataTemplate DataType="{x:Type vm:HomeWindowViewModel}">
+                                <views:HomeWindow DataContext="{Binding}"/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:JoinRoomWindowViewModel}">
+                                <views:JoinRoomWindow DataContext="{Binding}"/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:CreateRoomWindowViewModel}">
+                                <views:CreateRoomWindow/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:ListenTogetherWindowViewModel}">
+                                <views:ListenTogetherWindow/>
+                        </DataTemplate>
+					    <DataTemplate DataType="{x:Type vm:ChatViewModel}">
+						    <views:ChatView/>
+					    </DataTemplate>
+                </ContentControl.DataTemplates>
+        </ContentControl>
 </Window>

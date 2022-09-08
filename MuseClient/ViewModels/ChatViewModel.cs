@@ -2,8 +2,9 @@
 using MuseClient.Services;
 using System.Windows.Input;
 using MuseClient.Commands;
+using MuseClient.Enums;
+using MuseClient.Stores;
 using MuseDomain.Models;
-using System.Diagnostics;
 
 namespace MuseClient.ViewModels;
 public class ChatViewModel : ViewModelBase
@@ -13,9 +14,12 @@ public class ChatViewModel : ViewModelBase
 
     private string _errorMessage = string.Empty;
     private bool _isConnected;
+    private readonly NavigationStore _navigationStore;
 
-    public ChatViewModel(SignalRChatService chatService)
+    public ChatViewModel(NavigationStore navigationStore, SignalRChatService chatService)
     {
+        _navigationStore = navigationStore;
+
         SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
         Messages = new string(Array.Empty<char>());
 
@@ -26,9 +30,9 @@ public class ChatViewModel : ViewModelBase
         Messages = chatMessage.Message;
         Console.WriteLine(chatMessage.Message);
     }
-    public static ChatViewModel CreateConnectedViewModel(SignalRChatService chatService)
+    public static ChatViewModel CreateConnectedViewModel(NavigationStore navigationStore, SignalRChatService chatService)
     {
-        ChatViewModel viewModel = new ChatViewModel(chatService);
+        ChatViewModel viewModel = new ChatViewModel(navigationStore, chatService);
 
         chatService.Connect().ContinueWith(task =>
         {
@@ -62,6 +66,18 @@ public class ChatViewModel : ViewModelBase
         {
             _isConnected = value;
             Console.WriteLine("Connected to Server");
+        }
+    }
+
+    public void SwitchPage(string page)
+    {
+        switch (page)
+        {
+            case Pages.ListenTogetherPage:
+                _navigationStore.CurrentViewModel = new ListenTogetherWindowViewModel(_navigationStore);
+                break;
+            default:
+                throw new ArgumentException($"Invalid page name received: {page}");
         }
     }
 

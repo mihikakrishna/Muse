@@ -4,6 +4,7 @@ using Avalonia.Controls.Templates;
 using MuseClient.ViewModels;
 
 namespace MuseClient;
+
 public class ViewLocator : IDataTemplate
 {
     public IControl Build(object data)

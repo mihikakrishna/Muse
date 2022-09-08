@@ -1,20 +1,22 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using JetBrains.Annotations;
-using Avalonia.Threading;
-using Avalonia;
-using MuseClient.Commands;
-using System.Diagnostics;
-using System.Collections.ObjectModel;
+using MuseClient.Stores;
+using ReactiveUI;
 
 namespace MuseClient.ViewModels;
+
 public class MainWindowViewModel : ViewModelBase
 {
-    public ChatViewModel ChatViewModel { get; set; }
-    public MainWindowViewModel(ChatViewModel chatViewModel)
+    private readonly NavigationStore _navigationStore;
+
+    public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+
+    public MainWindowViewModel(NavigationStore navigationStore)
     {
-        ChatViewModel = chatViewModel;
+        _navigationStore = navigationStore;
+        _navigationStore.CurrentViewModelIsChanged += OnCurrentViewModelChanged;
+    }
+
+    private void OnCurrentViewModelChanged()
+    {
+        this.RaisePropertyChanged(nameof(CurrentViewModel));
     }
 }
