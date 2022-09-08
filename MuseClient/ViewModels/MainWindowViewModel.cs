@@ -9,14 +9,12 @@ using MuseClient.Commands;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 
-namespace MuseClient.ViewModels
+namespace MuseClient.ViewModels;
+public class MainWindowViewModel : ViewModelBase
 {
-    public class MainWindowViewModel : ViewModelBase
+    public ChatViewModel ChatViewModel { get; set; }
+    public MainWindowViewModel(ChatViewModel chatViewModel)
     {
-        public ChatViewModel ChatViewModel { get; set; }
-        public MainWindowViewModel(ChatViewModel chatViewModel)
-        {
-            ChatViewModel = chatViewModel;
-        }
+        ChatViewModel = chatViewModel;
     }
 }
