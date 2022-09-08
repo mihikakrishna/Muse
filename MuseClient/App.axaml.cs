@@ -1,29 +1,32 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using MuseClient.Stores;
 using MuseClient.ViewModels;
 using MuseClient.Views;
 
-namespace MuseClient
+namespace MuseClient;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        AvaloniaXamlLoader.Load(this);
+    }
 
-        public override void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            var navigationStore = new NavigationStore();
+            var mainWindowViewModel = new MainWindowViewModel(navigationStore);
+            
+            desktop.MainWindow = new MainWindow
             {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
-            }
-
-            base.OnFrameworkInitializationCompleted();
+                DataContext = mainWindowViewModel,
+            };
         }
+
+        base.OnFrameworkInitializationCompleted();
     }
 }

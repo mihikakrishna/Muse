@@ -1,11 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using MuseClient.Stores;
+using ReactiveUI;
 
-namespace MuseClient.ViewModels
+namespace MuseClient.ViewModels;
+
+public class MainWindowViewModel : ViewModelBase
 {
-    public class MainWindowViewModel : ViewModelBase
+    private readonly NavigationStore _navigationStore;
+
+    public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+
+    public MainWindowViewModel(NavigationStore navigationStore)
     {
-        public string Greeting => "Welcome to Avalonia!";
+        _navigationStore = navigationStore;
+        _navigationStore.CurrentViewModelIsChanged += OnCurrentViewModelChanged;
+    }
+
+    private void OnCurrentViewModelChanged()
+    {
+        this.RaisePropertyChanged(nameof(CurrentViewModel));
     }
 }
