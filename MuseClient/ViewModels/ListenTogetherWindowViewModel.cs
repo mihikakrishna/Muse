@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Enums;
 using MuseClient.Services;
@@ -23,7 +24,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
                 _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore);
                 break;
             case Pages.ChatPage:
-                _navigationStore.CurrentViewModel = ChatViewModel.CreateConnectedViewModel(_navigationStore, _navigationStore._chatService);
+                _navigationStore.CurrentViewModel = _navigationStore.ChatViewModel;
                 break;
             default:
                 throw new ArgumentException($"Invalid page name received: {page}");
