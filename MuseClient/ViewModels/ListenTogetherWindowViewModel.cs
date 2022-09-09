@@ -1,6 +1,4 @@
 using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Enums;
 using MuseClient.Services;
 using MuseClient.Stores;

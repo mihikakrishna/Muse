@@ -15,7 +15,7 @@ public class CreateRoomWindowViewModel : ViewModelBase
         _navigationStore = navigationStore;
         _chatService = chatService;
     }
-    
+
     public void SwitchPage(string page)
     {
         switch (page)

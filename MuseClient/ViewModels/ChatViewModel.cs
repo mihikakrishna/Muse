@@ -1,40 +1,40 @@
 ﻿using System;
-using MuseClient.Services;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using MuseClient.Commands;
 using MuseClient.Enums;
+using MuseClient.Services;
 using MuseClient.Stores;
 using MuseDomain.Models;
+using ReactiveUI;
 
 namespace MuseClient.ViewModels;
 public class ChatViewModel : ViewModelBase
 {
-    public string Messages { get; set; }
-    public ICommand SendChatMessageCommand { get; }
-
-    private string _errorMessage = string.Empty;
+    private string _errorMessage;
     private bool _isConnected;
     private readonly NavigationStore _navigationStore;
     private readonly SignalRChatService _chatService;
+    public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();
+    public ICommand SendChatMessageCommand { get; }
 
     public ChatViewModel(NavigationStore navigationStore, SignalRChatService chatService)
     {
+        _errorMessage = string.Empty;
         _navigationStore = navigationStore;
         _chatService = chatService;
         SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
 
-        Messages = new string(Array.Empty<char>());
-
-        chatService.MessageRecieved += ChatService_MessageReceived;
+        chatService.MessageReceived += ChatService_MessageReceived;
     }
     private void ChatService_MessageReceived(ChatMessage chatMessage)
     {
-        Messages = chatMessage.Message;
+        Messages.Add(chatMessage.Message);
         Console.WriteLine(chatMessage.Message);
     }
     public static ChatViewModel CreateConnectedViewModel(NavigationStore navigationStore, SignalRChatService chatService)
     {
-        ChatViewModel viewModel = new ChatViewModel(navigationStore, chatService);
+        var viewModel = new ChatViewModel(navigationStore, chatService);
 
         chatService.Connect().ContinueWith(task =>
         {
@@ -54,10 +54,9 @@ public class ChatViewModel : ViewModelBase
         }
         set
         {
-            _errorMessage = value;
+            this.RaiseAndSetIfChanged(ref _errorMessage, value);
         }
     }
-    public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
     public bool IsConnected
     {
         get
@@ -66,8 +65,7 @@ public class ChatViewModel : ViewModelBase
         }
         set
         {
-            _isConnected = value;
-            Console.WriteLine("Connected to Server");
+            this.RaiseAndSetIfChanged(ref _isConnected, value);
         }
     }
 

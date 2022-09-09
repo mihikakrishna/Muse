@@ -1,5 +1,4 @@
 using System;
-using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Services;
 using MuseClient.ViewModels;
 using ReactiveUI;

@@ -16,7 +16,7 @@ public class SendChatMessageCommand : ICommand
         _chatService = chatService;
     }
 
-    public event EventHandler? CanExecuteChanged;
+    public event EventHandler? CanExecuteChanged = delegate { };
 
     public bool CanExecute(object? parameter)
     {

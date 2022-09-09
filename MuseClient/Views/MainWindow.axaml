@@ -23,7 +23,7 @@
                                 <views:ListenTogetherWindow/>
                         </DataTemplate>
 					    <DataTemplate DataType="{x:Type vm:ChatViewModel}">
-						    <views:ChatView/>
+						        <views:ChatView/>
 					    </DataTemplate>
                 </ContentControl.DataTemplates>
         </ContentControl>
