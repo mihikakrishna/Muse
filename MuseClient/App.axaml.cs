@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.AspNetCore.SignalR.Client;
+using MuseClient.Services;
 using MuseClient.Stores;
 using MuseClient.ViewModels;
 using MuseClient.Views;
@@ -19,7 +20,10 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var navigationStore = new NavigationStore();
+            var chatService =  new SignalRChatService(new HubConnectionBuilder()
+                    .WithUrl("https://localhost:5001/chatHub")
+                    .Build());
+            var navigationStore = new NavigationStore(chatService);
             var mainWindowViewModel = new MainWindowViewModel(navigationStore);
             
             desktop.MainWindow = new MainWindow

@@ -1,3 +1,4 @@
+using MuseClient.Services;
 using MuseClient.Stores;
 using ReactiveUI;
 

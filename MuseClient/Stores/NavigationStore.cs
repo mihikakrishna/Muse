@@ -9,19 +9,11 @@ namespace MuseClient.Stores;
 public class NavigationStore : StoreBase
 {
     private ViewModelBase _currentViewModel;
-    private SignalRChatService _chatService;
-    private ChatViewModel _chatViewModel;
-
     public event Action? CurrentViewModelIsChanged;
 
-
-    public NavigationStore()
+    public NavigationStore(SignalRChatService chatService)
     {
-        _currentViewModel = new HomeWindowViewModel(this);
-        _chatService = new SignalRChatService(new HubConnectionBuilder()
-                    .WithUrl("https://localhost:5001/chatHub")
-                    .Build());
-        _chatViewModel = ChatViewModel.CreateConnectedViewModel(this, _chatService);
+        _currentViewModel = new HomeWindowViewModel(this, chatService);
     }
 
     public ViewModelBase CurrentViewModel
@@ -32,11 +24,6 @@ public class NavigationStore : StoreBase
             this.RaiseAndSetIfChanged(ref _currentViewModel, value);
             OnCurrentViewModelIsChanged();
         }
-    }
-
-    public ChatViewModel ChatViewModel
-    {
-        get => _chatViewModel;
     }
 
     private void OnCurrentViewModelIsChanged()

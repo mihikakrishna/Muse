@@ -15,12 +15,14 @@ public class ChatViewModel : ViewModelBase
     private string _errorMessage = string.Empty;
     private bool _isConnected;
     private readonly NavigationStore _navigationStore;
+    private readonly SignalRChatService _chatService;
 
     public ChatViewModel(NavigationStore navigationStore, SignalRChatService chatService)
     {
         _navigationStore = navigationStore;
-
+        _chatService = chatService;
         SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
+
         Messages = new string(Array.Empty<char>());
 
         chatService.MessageRecieved += ChatService_MessageReceived;
@@ -74,7 +76,7 @@ public class ChatViewModel : ViewModelBase
         switch (page)
         {
             case Pages.ListenTogetherPage:
-                _navigationStore.CurrentViewModel = new ListenTogetherWindowViewModel(_navigationStore);
+                _navigationStore.CurrentViewModel = new ListenTogetherWindowViewModel(_navigationStore, _chatService);
                 break;
             default:
                 throw new ArgumentException($"Invalid page name received: {page}");
