@@ -17,6 +17,21 @@ public class SignalRChatService
     public async Task Connect()
     {
         await _connection.StartAsync();
+        Console.WriteLine("Connected");
+    }
+    public async Task Disconnect()
+    {
+        try
+        {
+            await _connection.StopAsync();
+            Console.WriteLine("Disconnected");
+        }
+        finally
+        {
+            await _connection.DisposeAsync();
+            Console.WriteLine("Disposed");
+        }
+        
     }
     public async Task SendMessage(ChatMessage message)
     {

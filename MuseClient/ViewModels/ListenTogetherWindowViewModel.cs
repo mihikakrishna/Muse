@@ -72,11 +72,12 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         }
     }
 
-    public void SwitchPage(string page)
+    public async Task SwitchPage(string page)
     {
         switch (page)
         {
             case Pages.HomePage:
+                await _chatService.Disconnect();
                 _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore, _chatService);
                 break;
             default:

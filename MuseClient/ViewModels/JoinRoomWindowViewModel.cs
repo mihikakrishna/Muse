@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Enums;
 using MuseClient.Services;
 using MuseClient.Stores;
@@ -24,7 +26,10 @@ public class JoinRoomWindowViewModel : ViewModelBase
                 _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore, _chatService);
                 break;
             case Pages.ListenTogetherPage:
-                _navigationStore.CurrentViewModel = new ListenTogetherWindowViewModel(_navigationStore, _chatService);
+                var chatService = new SignalRChatService(new HubConnectionBuilder()
+                    .WithUrl("https://localhost:5001/chatHub")
+                    .Build());
+                _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(_navigationStore, chatService);
                 break;
             default:
                 throw new ArgumentException($"Invalid page name received: {page}");
