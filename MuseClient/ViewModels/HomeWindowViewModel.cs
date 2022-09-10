@@ -1,6 +1,5 @@
 using System;
 using MuseClient.Enums;
-using MuseClient.Services;
 using MuseClient.Stores;
 
 namespace MuseClient.ViewModels;

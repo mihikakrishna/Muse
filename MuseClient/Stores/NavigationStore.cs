@@ -1,5 +1,4 @@
 using System;
-using MuseClient.Services;
 using MuseClient.ViewModels;
 using ReactiveUI;
 

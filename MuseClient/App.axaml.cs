@@ -1,8 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Microsoft.AspNetCore.SignalR.Client;
-using MuseClient.Services;
 using MuseClient.Stores;
 using MuseClient.ViewModels;
 using MuseClient.Views;

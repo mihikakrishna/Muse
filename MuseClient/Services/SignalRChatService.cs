@@ -31,7 +31,7 @@ public class SignalRChatService
             await _connection.DisposeAsync();
             Console.WriteLine("Disposed");
         }
-        
+
     }
     public async Task SendMessage(ChatMessage message)
     {

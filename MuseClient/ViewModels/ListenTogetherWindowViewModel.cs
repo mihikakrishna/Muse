@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Commands;
 using MuseClient.Enums;
 using MuseClient.Services;
@@ -20,8 +21,12 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     public ObservableCollection<string> Messages { get; }
     public ICommand SendChatMessageCommand { get; }
 
-    public static ListenTogetherWindowViewModel CreateConnectedViewModel(NavigationStore navigationStore, SignalRChatService chatService)
+    public static ListenTogetherWindowViewModel CreateConnectedViewModel(NavigationStore navigationStore)
     {
+        var hubConnection = new HubConnectionBuilder()
+                    .WithUrl("https://localhost:5001/chatHub")
+                    .Build();
+        var chatService = new SignalRChatService(hubConnection);
         var viewModel = new ListenTogetherWindowViewModel(navigationStore, chatService);
 
         chatService.Connect().ContinueWith(task =>
@@ -35,7 +40,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         return viewModel;
     }
 
-    public ListenTogetherWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService)
+    private ListenTogetherWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService)
     {
         _errorMessage = string.Empty;
         _navigationStore = navigationStore;
