@@ -8,12 +8,10 @@ namespace MuseClient.ViewModels;
 public class HomeWindowViewModel : ViewModelBase
 {
     private readonly NavigationStore _navigationStore;
-    private SignalRChatService _chatService;
 
-    public HomeWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService)
+    public HomeWindowViewModel(NavigationStore navigationStore)
     {
         _navigationStore = navigationStore;
-        _chatService = chatService;
     }
 
     public void SwitchPage(string page)
@@ -21,10 +19,10 @@ public class HomeWindowViewModel : ViewModelBase
         switch (page)
         {
             case Pages.JoinRoomPage:
-                _navigationStore.CurrentViewModel = new JoinRoomWindowViewModel(_navigationStore, _chatService);
+                _navigationStore.CurrentViewModel = new JoinRoomWindowViewModel(_navigationStore);
                 break;
             case Pages.CreateRoomPage:
-                _navigationStore.CurrentViewModel = new CreateRoomWindowViewModel(_navigationStore, _chatService);
+                _navigationStore.CurrentViewModel = new CreateRoomWindowViewModel(_navigationStore);
                 break;
             default:
                 throw new ArgumentException($"Invalid page name received: {page}");

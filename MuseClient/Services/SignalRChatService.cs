@@ -12,7 +12,7 @@ public class SignalRChatService
     public SignalRChatService(HubConnection connection)
     {
         _connection = connection;
-        _connection.On<ChatMessage>("RecieveMessage", (chatMessage) => MessageReceived?.Invoke(chatMessage));
+        _connection.On<ChatMessage>("ReceiveMessage", (chatMessage) => MessageReceived?.Invoke(chatMessage));
     }
     public async Task Connect()
     {

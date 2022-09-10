@@ -10,9 +10,9 @@ public class NavigationStore : StoreBase
     private ViewModelBase _currentViewModel;
     public event Action? CurrentViewModelIsChanged;
 
-    public NavigationStore(SignalRChatService chatService)
+    public NavigationStore()
     {
-        _currentViewModel = new HomeWindowViewModel(this, chatService);
+        _currentViewModel = new HomeWindowViewModel(this);
     }
 
     public ViewModelBase CurrentViewModel

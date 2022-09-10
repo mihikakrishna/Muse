@@ -8,7 +8,7 @@ namespace MuseServer
 
         public async Task SendMessage(ChatMessage chatMessage)
         {
-            await Clients.All.SendAsync("RecieveMessage", chatMessage);
+            await Clients.All.SendAsync("ReceiveMessage", chatMessage);
         }
     }
 }

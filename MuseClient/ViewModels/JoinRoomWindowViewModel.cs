@@ -10,12 +10,10 @@ namespace MuseClient.ViewModels;
 public class JoinRoomWindowViewModel : ViewModelBase
 {
     private readonly NavigationStore _navigationStore;
-    private readonly SignalRChatService _chatService;
 
-    public JoinRoomWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService)
+    public JoinRoomWindowViewModel(NavigationStore navigationStore)
     {
         _navigationStore = navigationStore;
-        _chatService = chatService;
     }
 
     public void SwitchPage(string page)
@@ -23,12 +21,13 @@ public class JoinRoomWindowViewModel : ViewModelBase
         switch (page)
         {
             case Pages.HomePage:
-                _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore, _chatService);
+                _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore);
                 break;
             case Pages.ListenTogetherPage:
-                var chatService = new SignalRChatService(new HubConnectionBuilder()
+                var hubConnection = new HubConnectionBuilder()
                     .WithUrl("https://localhost:5001/chatHub")
-                    .Build());
+                    .Build();
+                var chatService = new SignalRChatService(hubConnection);
                 _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(_navigationStore, chatService);
                 break;
             default:

@@ -20,10 +20,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var chatService = new SignalRChatService(new HubConnectionBuilder()
-                    .WithUrl("https://localhost:5001/chatHub")
-                    .Build());
-            var navigationStore = new NavigationStore(chatService);
+            var navigationStore = new NavigationStore();
             var mainWindowViewModel = new MainWindowViewModel(navigationStore);
 
             desktop.MainWindow = new MainWindow

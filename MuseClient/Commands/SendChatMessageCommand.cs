@@ -18,10 +18,7 @@ public class SendChatMessageCommand : ICommand
 
     public event EventHandler? CanExecuteChanged = delegate { };
 
-    public bool CanExecute(object? parameter)
-    {
-        return true;
-    }
+    public bool CanExecute(object? parameter) => true;
 
     public async void Execute(object? parameter)
     {
