@@ -12,7 +12,7 @@ public class JoinRoomWindowViewModel : ViewModelBase
     {
         _navigationStore = navigationStore;
     }
-    
+
     public void SwitchPage(string page)
     {
         switch (page)
@@ -21,7 +21,7 @@ public class JoinRoomWindowViewModel : ViewModelBase
                 _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore);
                 break;
             case Pages.ListenTogetherPage:
-                _navigationStore.CurrentViewModel = new ListenTogetherWindowViewModel(_navigationStore);
+                _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(_navigationStore);
                 break;
             default:
                 throw new ArgumentException($"Invalid page name received: {page}");

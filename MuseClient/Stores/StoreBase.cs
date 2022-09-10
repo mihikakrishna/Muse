@@ -4,5 +4,5 @@ namespace MuseClient.Stores;
 
 public class StoreBase : ReactiveObject
 {
-    
+
 }

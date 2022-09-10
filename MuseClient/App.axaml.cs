@@ -20,7 +20,7 @@ public partial class App : Application
         {
             var navigationStore = new NavigationStore();
             var mainWindowViewModel = new MainWindowViewModel(navigationStore);
-            
+
             desktop.MainWindow = new MainWindow
             {
                 DataContext = mainWindowViewModel,

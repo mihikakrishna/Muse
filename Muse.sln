@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuseClient", "MuseClient\MuseClient.csproj", "{83C40EFA-57F5-48B4-93AC-349A3E1616F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MuseClient", "MuseClient\MuseClient.csproj", "{83C40EFA-57F5-48B4-93AC-349A3E1616F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuseServer", "MuseServer\MuseServer.csproj", "{CBAAA491-191D-45BF-A280-75C6C5EF8594}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MuseServer", "MuseServer\MuseServer.csproj", "{CBAAA491-191D-45BF-A280-75C6C5EF8594}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuseDomain", "MuseDomain\MuseDomain.csproj", "{6773CA6A-9186-4127-A2FC-78191F3CAE40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{CBAAA491-191D-45BF-A280-75C6C5EF8594}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBAAA491-191D-45BF-A280-75C6C5EF8594}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBAAA491-191D-45BF-A280-75C6C5EF8594}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6773CA6A-9186-4127-A2FC-78191F3CAE40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6773CA6A-9186-4127-A2FC-78191F3CAE40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6773CA6A-9186-4127-A2FC-78191F3CAE40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6773CA6A-9186-4127-A2FC-78191F3CAE40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

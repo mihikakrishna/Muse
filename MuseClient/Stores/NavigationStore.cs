@@ -8,7 +8,7 @@ public class NavigationStore : StoreBase
 {
     private ViewModelBase _currentViewModel;
     public event Action? CurrentViewModelIsChanged;
-    
+
     public NavigationStore()
     {
         _currentViewModel = new HomeWindowViewModel(this);
@@ -18,7 +18,7 @@ public class NavigationStore : StoreBase
     {
         get => _currentViewModel;
         set
-        { 
+        {
             this.RaiseAndSetIfChanged(ref _currentViewModel, value);
             OnCurrentViewModelIsChanged();
         }
