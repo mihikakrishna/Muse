@@ -22,9 +22,6 @@
                         <DataTemplate DataType="{x:Type vm:ListenTogetherWindowViewModel}">
                                 <views:ListenTogetherWindow/>
                         </DataTemplate>
-					    <DataTemplate DataType="{x:Type vm:ChatViewModel}">
-						        <views:ChatView/>
-					    </DataTemplate>
                 </ContentControl.DataTemplates>
         </ContentControl>
 </Window>

@@ -7,10 +7,10 @@ using MuseDomain.Models;
 namespace MuseClient.Commands;
 public class SendChatMessageCommand : ICommand
 {
-    private readonly ChatViewModel _viewModel;
+    private readonly ListenTogetherWindowViewModel _viewModel;
     private readonly SignalRChatService _chatService;
 
-    public SendChatMessageCommand(ChatViewModel viewModel, SignalRChatService chatService)
+    public SendChatMessageCommand(ListenTogetherWindowViewModel viewModel, SignalRChatService chatService)
     {
         _viewModel = viewModel;
         _chatService = chatService;
@@ -27,10 +27,7 @@ public class SendChatMessageCommand : ICommand
     {
         try
         {
-            await _chatService.SendMessage(new ChatMessage()
-            {
-                Message = "Hello World!"
-            });
+            await _chatService.SendMessage(new ChatMessage(message: "Hello World!"));
 
             _viewModel.ErrorMessage = string.Empty;
         }

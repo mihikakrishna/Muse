@@ -1,5 +1,10 @@
 ﻿namespace MuseDomain.Models;
 public class ChatMessage
 {
-    public string Message { get; set; }
+    public string Message { get; }
+
+    public ChatMessage(string message)
+    {
+        Message = message;
+    }
 }
