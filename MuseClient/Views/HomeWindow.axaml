@@ -4,15 +4,81 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MuseClient.Views.HomeWindow">
-    <StackPanel>
-        <TextBlock>
-            Home Page
-        </TextBlock>
-        <Button Command="{Binding SwitchPage}" 
-                CommandParameter="JoinRoomPage" 
-                Content="Join Room" />
-        <Button Command="{Binding SwitchPage}" 
-                CommandParameter="CreateRoomPage" 
-                Content="Create Room" />
-    </StackPanel>
+    <Grid RowDefinitions="40,*" Background="{DynamicResource LightPaletteColor}">
+        
+        <!-- Title -->
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <Label Classes="header" Content="MUSE"/>
+            <Label Content="LISTEN TO MUSIC WITH FRIENDS"/>
+        </StackPanel>
+        
+        <!-- Body -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,60,*" Margin="60 20 60 30">
+            
+            <!-- Create Room Panel -->
+            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="2">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    
+                    <!-- Panel Header -->
+                    <StackPanel Grid.Row="0" Background="{DynamicResource DarkPaletteColor}">
+                        <TextBlock Classes="header"
+                                   HorizontalAlignment="Center"
+                                   Margin="0 10 0 10"
+                                   Text="Create Party"/>
+                    </StackPanel>
+                    
+                    <!-- Panel Body -->
+                    <TextBlock Grid.Row="1"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="15 10 15 0"
+                               Text="You will receive a room code. Share room code with your friends and they can join the same room."/>
+                    
+                    <!-- Panel Button -->
+                    <Button Grid.Row="2" 
+                            HorizontalAlignment="Center" 
+                            Margin="0 0 0 15"
+                            Content="Create" 
+                            Command="{Binding SwitchPage}" 
+                            CommandParameter="CreateRoomPage"/>
+                </Grid>
+            </Border>
+            
+            <!-- Join Room Panel -->
+            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="2">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    
+                    <!-- Panel Header -->
+                    <StackPanel Grid.Row="0" Background="{DynamicResource DarkPaletteColor}">
+                        <TextBlock Classes="header"
+                                   HorizontalAlignment="Center"
+                                   Margin="0 10 0 10"
+                                   Text="Join Party"/>
+                    </StackPanel>
+                    
+                    <!-- Panel Body -->
+                    <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                        <TextBlock HorizontalAlignment="Center"
+                                   Margin="15 10 15 0"
+                                   Text="Enter Room Code"/>
+                        <TextBox Watermark="Room Code:"
+                                 Margin="30 15 30 0" />
+                    </StackPanel>
+                    
+                    
+                    <!-- Panel Button -->
+                    <Button Grid.Row="2" 
+                            HorizontalAlignment="Center"
+                            Margin="0 0 0 15"
+                            Content="Join"
+                            Command="{Binding SwitchPage}"
+                            CommandParameter="JoinRoomPage"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
 </UserControl>
