@@ -2,11 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:MuseClient"
              x:Class="MuseClient.App">
+    <Application.Resources>
+        <SolidColorBrush x:Key="LightPaletteColor">#F5E1FD</SolidColorBrush>
+        <SolidColorBrush x:Key="DarkPaletteColor">#CE9DD9</SolidColorBrush>
+    </Application.Resources>
+    
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
 
     <Application.Styles>
         <FluentTheme Mode="Light"/>
+        <StyleInclude Source="/Styles/TextStyles.axaml" />
+        <StyleInclude Source="/Styles/LabelStyle.axaml" />
+        <StyleInclude Source="/Styles/ButtonStyles.axaml" />
     </Application.Styles>
 </Application>
