@@ -13,9 +13,6 @@ public class ListenTogetherWindowViewModel : ViewModelBase
 {
     private string _errorMessage;
     private bool _isConnected;
-    private readonly NavigationStore _navigationStore;
-
-    private SignalRChatService _chatService;
     public ObservableCollection<string> Messages { get; }
     public ICommand SendChatMessageCommand { get; }
     public ICommand NavigateToHomeWindowCommand { get; }
@@ -42,9 +39,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     private ListenTogetherWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService)
     {
         _errorMessage = string.Empty;
-        _navigationStore = navigationStore;
-        _chatService = chatService;
-
+        
         Messages = new ObservableCollection<string>();
         SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
         NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(chatService, navigationStore);
