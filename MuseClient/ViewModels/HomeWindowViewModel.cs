@@ -1,4 +1,6 @@
 using System;
+using System.Windows.Input;
+using MuseClient.Commands;
 using MuseClient.Enums;
 using MuseClient.Stores;
 
@@ -6,15 +8,12 @@ namespace MuseClient.ViewModels;
 
 public class HomeWindowViewModel : ViewModelBase
 {
-    private readonly NavigationStore _navigationStore;
+    public ICommand NavigateToListenTogetherWindowCommand { get; }
 
     public HomeWindowViewModel(NavigationStore navigationStore)
     {
-        _navigationStore = navigationStore;
+        NavigateToListenTogetherWindowCommand = new NavigateToListenTogetherWindowCommand(navigationStore);
     }
 
-    public void SwitchPage()
-    {
-        _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(_navigationStore);
-    }
+    
 }
