@@ -27,12 +27,6 @@
                                 <DataTemplate DataType="{x:Type vm:HomeWindowViewModel}">
                                         <views:HomeWindow DataContext="{Binding}"/>
                                 </DataTemplate>
-                                <DataTemplate DataType="{x:Type vm:JoinRoomWindowViewModel}">
-                                        <views:JoinRoomWindow DataContext="{Binding}"/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type vm:CreateRoomWindowViewModel}">
-                                        <views:CreateRoomWindow/>
-                                </DataTemplate>
                                 <DataTemplate DataType="{x:Type vm:ListenTogetherWindowViewModel}">
                                         <views:ListenTogetherWindow/>
                                 </DataTemplate>

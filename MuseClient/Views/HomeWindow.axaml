@@ -31,8 +31,7 @@
                         HorizontalAlignment="Center" 
                         Margin="0 0 0 15"
                         Content="Create" 
-                        Command="{Binding SwitchPage}" 
-                        CommandParameter="CreateRoomPage"/>
+                        Command="{Binding SwitchPage}"/>
             </Grid>
         </Border>
         
@@ -63,8 +62,7 @@
                         HorizontalAlignment="Center"
                         Margin="0 0 0 15"
                         Content="Join"
-                        Command="{Binding SwitchPage}"
-                        CommandParameter="JoinRoomPage"/>
+                        Command="{Binding SwitchPage}"/>
             </Grid>
         </Border>
     </Grid>

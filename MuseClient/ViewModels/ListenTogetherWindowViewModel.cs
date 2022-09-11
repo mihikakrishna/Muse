@@ -69,17 +69,10 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isConnected, value);
     }
 
-    public async Task SwitchPage(string page)
+    public async Task SwitchPage()
     {
-        switch (page)
-        {
-            case Pages.HomePage:
-                await _chatService.Disconnect();
-                _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore);
-                break;
-            default:
-                throw new ArgumentException($"Invalid page name received: {page}");
-        }
+        await _chatService.Disconnect();
+        _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore);
     }
 
 }

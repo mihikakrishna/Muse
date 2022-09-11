@@ -13,18 +13,8 @@ public class HomeWindowViewModel : ViewModelBase
         _navigationStore = navigationStore;
     }
 
-    public void SwitchPage(string page)
+    public void SwitchPage()
     {
-        switch (page)
-        {
-            case Pages.JoinRoomPage:
-                _navigationStore.CurrentViewModel = new JoinRoomWindowViewModel(_navigationStore);
-                break;
-            case Pages.CreateRoomPage:
-                _navigationStore.CurrentViewModel = new CreateRoomWindowViewModel(_navigationStore);
-                break;
-            default:
-                throw new ArgumentException($"Invalid page name received: {page}");
-        }
+        _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(_navigationStore);
     }
 }
