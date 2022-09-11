@@ -1,7 +1,5 @@
-using System;
 using System.Windows.Input;
 using MuseClient.Commands;
-using MuseClient.Enums;
 using MuseClient.Stores;
 
 namespace MuseClient.ViewModels;

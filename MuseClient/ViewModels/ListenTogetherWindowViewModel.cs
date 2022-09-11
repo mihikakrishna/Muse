@@ -1,10 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Commands;
-using MuseClient.Enums;
 using MuseClient.Services;
 using MuseClient.Stores;
 using MuseDomain.Models;
