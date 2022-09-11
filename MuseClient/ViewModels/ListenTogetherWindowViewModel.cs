@@ -20,6 +20,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     private SignalRChatService _chatService;
     public ObservableCollection<string> Messages { get; }
     public ICommand SendChatMessageCommand { get; }
+    public ICommand NavigateToHomeWindowCommand { get; }
 
     public static ListenTogetherWindowViewModel CreateConnectedViewModel(NavigationStore navigationStore)
     {
@@ -48,7 +49,8 @@ public class ListenTogetherWindowViewModel : ViewModelBase
 
         Messages = new ObservableCollection<string>();
         SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
-
+        NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(chatService, navigationStore);
+        
         chatService.MessageReceived += ChatService_MessageReceived;
     }
     private void ChatService_MessageReceived(ChatMessage chatMessage)
@@ -67,12 +69,6 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     {
         get => _isConnected;
         set => this.RaiseAndSetIfChanged(ref _isConnected, value);
-    }
-
-    public async Task SwitchPage()
-    {
-        await _chatService.Disconnect();
-        _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore);
     }
 
 }

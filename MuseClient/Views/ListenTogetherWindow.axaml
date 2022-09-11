@@ -8,7 +8,7 @@
         <TextBlock>
             Listen Together Page
         </TextBlock>
-        <Button Command="{Binding SwitchPage}"
+        <Button Command="{Binding NavigateToHomeWindowCommand}"
                 Content="Go home" />
     </StackPanel>
 </UserControl>
