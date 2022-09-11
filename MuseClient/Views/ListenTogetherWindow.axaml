@@ -11,7 +11,5 @@
         <Button Command="{Binding SwitchPage}" 
                 CommandParameter="HomePage" 
                 Content="Go home" />
-		<Button Command="{Binding SendChatMessageCommand}"
-                Content="Send Message" />
     </StackPanel>
 </UserControl>
