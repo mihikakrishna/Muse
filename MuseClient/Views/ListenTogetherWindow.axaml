@@ -4,11 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MuseClient.Views.ListenTogetherWindow">
-    <StackPanel>
-        <TextBlock>
-            Listen Together Page
-        </TextBlock>
-        <Button Command="{Binding NavigateToHomeWindowCommand}"
-                Content="Go home" />
-    </StackPanel>
+    <Grid ColumnDefinitions="7*,2*" Background="{DynamicResource LightPaletteColor}">
+        
+        <!-- Left Panel -->
+        <Grid Grid.Column="0" RowDefinitions="*,40">
+            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0 1 1 0">
+                <ListBox Background="{DynamicResource LightPaletteColor}"
+                         Items="{Binding Songs}"/>
+            </Border>
+            <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,*">
+                <Button Grid.Column="0"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Content="Leave Room"
+                        Command="{Binding NavigateToHomeWindowCommand}"/>
+                <Button Grid.Column="1"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Content="Add song"/>
+                <TextBox Grid.Column="2"
+                         Watermark="Enter URL..."/>
+            </Grid>
+        </Grid>
+        
+        <!-- Right Panel -->
+        <Grid Grid.Column="1" RowDefinitions="*,40">
+            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="1 1 0 0">
+                <ListBox Background="{DynamicResource LightPaletteColor}"
+                         Items="{Binding Messages}"/>
+            </Border>
+            <TextBox Grid.Row="1"
+                     Watermark="Type here.."/>
+        </Grid>
+        
+    </Grid>
 </UserControl>
