@@ -51,8 +51,6 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         Songs.Add("Song 1");
         Songs.Add("Song 2");
         Songs.Add("Song 3");
-        Messages.Add("Message 1");
-        Messages.Add("Message 2");
 
         SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
         NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(chatService, navigationStore);

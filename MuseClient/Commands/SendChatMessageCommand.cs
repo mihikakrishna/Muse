@@ -26,7 +26,7 @@ public class SendChatMessageCommand : ICommand
         {
             var chatMessage = new ChatMessage(_viewModel.ChatInput);
             await _chatService.SendMessage(chatMessage);
-
+            _viewModel.ChatInput = string.Empty;
             _viewModel.ErrorMessage = string.Empty;
         }
         catch (Exception)
