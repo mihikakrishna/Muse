@@ -2,10 +2,12 @@
 
 public class ChatMessage
 {
-    public string Message { get; }
+    private readonly string _message;
 
     public ChatMessage(string message)
     {
-        Message = message;
+        _message = message;
     }
+
+    public string Message => _message;
 }

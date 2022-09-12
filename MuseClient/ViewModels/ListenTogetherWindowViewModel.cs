@@ -65,8 +65,8 @@ public class ListenTogetherWindowViewModel : ViewModelBase
 
     private void ChatService_MessageReceived(ChatMessage chatMessage)
     {
-        Messages.Add(new string(chatMessage.Message));
-        Console.WriteLine(new string(chatMessage.Message));
+        Messages.Add(chatMessage.Message);
+        Console.WriteLine(chatMessage.Message);
     }
 
     public string ErrorMessage
