@@ -34,7 +34,8 @@
                          Items="{Binding Messages}"/>
             </Border>
 			<TextBox Grid.Row="1"
-                     Watermark="Type here..">
+                     Watermark="Type here.."
+					 Text="{Binding ChatInput}">
 				<TextBox.KeyBindings>
 					<KeyBinding Command="{Binding SendChatMessageCommand}"
 							    Gesture="Enter" />
