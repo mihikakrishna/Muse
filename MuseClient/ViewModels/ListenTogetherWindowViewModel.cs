@@ -1,6 +1,5 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Windows.Input;
 using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Commands;
@@ -19,7 +18,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     public ObservableCollection<string> Songs { get; }
     public ICommand SendChatMessageCommand { get; }
     public ICommand NavigateToHomeWindowCommand { get; }
-    
+
 
     public static ListenTogetherWindowViewModel CreateConnectedViewModel(NavigationStore navigationStore)
     {
@@ -43,20 +42,21 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     private ListenTogetherWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService)
     {
         _errorMessage = string.Empty;
+        _chatInput = string.Empty;
 
         Songs = new ObservableCollection<string>();
         Messages = new ObservableCollection<string>();
-        
+
         // dummy data to test (delete once chat & song features work)
         Songs.Add("Song 1");
         Songs.Add("Song 2");
         Songs.Add("Song 3");
         Messages.Add("Message 1");
         Messages.Add("Message 2");
-        
+
         SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
         NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(chatService, navigationStore);
-        
+
         chatService.MessageReceived += ChatService_MessageReceived;
     }
     public string ChatInput
@@ -64,10 +64,11 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         get => _chatInput;
         set => this.RaiseAndSetIfChanged(ref _chatInput, value);
     }
+
     private void ChatService_MessageReceived(ChatMessage chatMessage)
     {
-        Messages.Add(ChatInput);
-        Console.WriteLine(ChatInput);
+        Messages.Add(new string(chatMessage.Message));
+        Console.WriteLine(new string(chatMessage.Message));
     }
 
     public string ErrorMessage

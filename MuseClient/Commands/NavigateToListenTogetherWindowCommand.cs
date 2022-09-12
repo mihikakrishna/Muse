@@ -13,7 +13,7 @@ public class NavigateToListenTogetherWindowCommand : ICommand
     {
         _navigationStore = navigationStore;
     }
-    
+
     public event EventHandler? CanExecuteChanged = delegate { };
 
     public bool CanExecute(object? parameter) => true;
