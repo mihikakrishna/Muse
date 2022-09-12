@@ -13,5 +13,5 @@ public class HomeWindowViewModel : ViewModelBase
         NavigateToListenTogetherWindowCommand = new NavigateToListenTogetherWindowCommand(navigationStore);
     }
 
-    
+
 }
