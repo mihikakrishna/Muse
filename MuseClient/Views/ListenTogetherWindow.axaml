@@ -33,8 +33,13 @@
                 <ListBox Background="{DynamicResource LightPaletteColor}"
                          Items="{Binding Messages}"/>
             </Border>
-            <TextBox Grid.Row="1"
-                     Watermark="Type here.."/>
+			<TextBox Grid.Row="1"
+                     Watermark="Type here..">
+				<TextBox.KeyBindings>
+					<KeyBinding Command="{Binding SendChatMessageCommand}"
+							    Gesture="Enter" />
+				</TextBox.KeyBindings>
+			</TextBox>
         </Grid>
         
     </Grid>
