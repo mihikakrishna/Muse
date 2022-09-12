@@ -14,7 +14,7 @@
     <Application.Styles>
         <FluentTheme Mode="Light"/>
         <StyleInclude Source="/Styles/TextStyles.axaml" />
-        <StyleInclude Source="/Styles/LabelStyle.axaml" />
+        <StyleInclude Source="/Styles/LabelStyles.axaml" />
         <StyleInclude Source="/Styles/ButtonStyles.axaml" />
     </Application.Styles>
 </Application>

@@ -1,10 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Commands;
-using MuseClient.Enums;
 using MuseClient.Services;
 using MuseClient.Stores;
 using MuseDomain.Models;
@@ -15,11 +13,10 @@ public class ListenTogetherWindowViewModel : ViewModelBase
 {
     private string _errorMessage;
     private bool _isConnected;
-    private readonly NavigationStore _navigationStore;
-
-    private SignalRChatService _chatService;
     public ObservableCollection<string> Messages { get; }
+    public ObservableCollection<string> Songs { get; }
     public ICommand SendChatMessageCommand { get; }
+    public ICommand NavigateToHomeWindowCommand { get; }
 
     public static ListenTogetherWindowViewModel CreateConnectedViewModel(NavigationStore navigationStore)
     {
@@ -43,12 +40,20 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     private ListenTogetherWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService)
     {
         _errorMessage = string.Empty;
-        _navigationStore = navigationStore;
-        _chatService = chatService;
 
+        Songs = new ObservableCollection<string>();
         Messages = new ObservableCollection<string>();
+        
+        // dummy data to test (delete once chat & song features work)
+        Songs.Add("Song 1");
+        Songs.Add("Song 2");
+        Songs.Add("Song 3");
+        Messages.Add("Message 1");
+        Messages.Add("Message 2");
+        
         SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
-
+        NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(chatService, navigationStore);
+        
         chatService.MessageReceived += ChatService_MessageReceived;
     }
     private void ChatService_MessageReceived(ChatMessage chatMessage)
@@ -67,19 +72,6 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     {
         get => _isConnected;
         set => this.RaiseAndSetIfChanged(ref _isConnected, value);
-    }
-
-    public async Task SwitchPage(string page)
-    {
-        switch (page)
-        {
-            case Pages.HomePage:
-                await _chatService.Disconnect();
-                _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore);
-                break;
-            default:
-                throw new ArgumentException($"Invalid page name received: {page}");
-        }
     }
 
 }

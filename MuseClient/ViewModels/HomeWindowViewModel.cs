@@ -1,30 +1,17 @@
-using System;
-using MuseClient.Enums;
+using System.Windows.Input;
+using MuseClient.Commands;
 using MuseClient.Stores;
 
 namespace MuseClient.ViewModels;
 
 public class HomeWindowViewModel : ViewModelBase
 {
-    private readonly NavigationStore _navigationStore;
+    public ICommand NavigateToListenTogetherWindowCommand { get; }
 
     public HomeWindowViewModel(NavigationStore navigationStore)
     {
-        _navigationStore = navigationStore;
+        NavigateToListenTogetherWindowCommand = new NavigateToListenTogetherWindowCommand(navigationStore);
     }
 
-    public void SwitchPage(string page)
-    {
-        switch (page)
-        {
-            case Pages.JoinRoomPage:
-                _navigationStore.CurrentViewModel = new JoinRoomWindowViewModel(_navigationStore);
-                break;
-            case Pages.CreateRoomPage:
-                _navigationStore.CurrentViewModel = new CreateRoomWindowViewModel(_navigationStore);
-                break;
-            default:
-                throw new ArgumentException($"Invalid page name received: {page}");
-        }
-    }
+    
 }
