@@ -13,6 +13,7 @@ namespace MuseClient.ViewModels;
 public class ListenTogetherWindowViewModel : ViewModelBase
 {
     private readonly string _username;
+    private readonly string _roomCode;
     private string _errorMessage;
     private bool _isConnected;
     private string _chatInput;
@@ -22,13 +23,20 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     public ICommand NavigateToHomeWindowCommand { get; }
 
 
-    public static ListenTogetherWindowViewModel CreateConnectedViewModel(NavigationStore navigationStore, string username)
+    public static ListenTogetherWindowViewModel CreateConnectedViewModel(
+        NavigationStore navigationStore, 
+        string username, 
+        string roomCode)
     {
         var hubConnection = new HubConnectionBuilder()
                     .WithUrl("https://localhost:5001/chatHub")
                     .Build();
         var chatService = new SignalRChatService(hubConnection);
-        var viewModel = new ListenTogetherWindowViewModel(navigationStore, chatService, username);
+        var viewModel = new ListenTogetherWindowViewModel(
+            navigationStore, 
+            chatService, 
+            username, 
+            roomCode);
 
         chatService.Connect().ContinueWith(task =>
         {
@@ -41,9 +49,14 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         return viewModel;
     }
 
-    private ListenTogetherWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService, string username)
+    private ListenTogetherWindowViewModel(
+        NavigationStore navigationStore, 
+        SignalRChatService chatService, 
+        string username, 
+        string roomCode)
     {
         _username = username;
+        _roomCode = roomCode;
         _errorMessage = string.Empty;
         _chatInput = string.Empty;
 
@@ -61,6 +74,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         chatService.MessageReceived += ChatService_MessageReceived;
     }
     
+    public string RoomCode => _roomCode;
     public string ChatInput
     {
         get => _chatInput;

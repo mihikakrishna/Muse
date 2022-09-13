@@ -8,7 +8,7 @@
         
         <!-- Left Panel -->
         <Grid Grid.Column="0" RowDefinitions="*,40">
-            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0 1 1 0">
+            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0 2 1 0">
                 <ListBox Background="{DynamicResource LightPaletteColor}"
                          Items="{Binding Songs}"/>
             </Border>
@@ -28,12 +28,24 @@
         </Grid>
         
         <!-- Right Panel -->
-        <Grid Grid.Column="1" RowDefinitions="*,40">
-            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="1 1 0 0">
+        <Grid Grid.Column="1" RowDefinitions="40,*,40">
+            
+            <!-- Room Code Text -->
+            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="1 2 0 0">
+                <Grid ColumnDefinitions="Auto,*" VerticalAlignment="Center" Margin="5">
+                    <TextBlock Grid.Column="0" Text="Room Code: "/>
+                    <TextBlock Grid.Column="1" Text="{Binding RoomCode}"/>
+                </Grid>
+            </Border>
+            
+            <!-- Chat Box Window -->
+            <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1 1 0 0">
                 <ListBox Background="{DynamicResource LightPaletteColor}"
                          Items="{Binding Messages}"/>
             </Border>
-			<TextBox Grid.Row="1"
+            
+            <!-- Chat Input Text Window -->
+			<TextBox Grid.Row="2"
                      Watermark="Type here.."
 					 Text="{Binding ChatInput}">
 				<TextBox.KeyBindings>

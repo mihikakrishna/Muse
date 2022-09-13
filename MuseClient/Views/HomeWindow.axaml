@@ -57,8 +57,8 @@
                         HorizontalAlignment="Center" 
                         Margin="0 0 0 15"
                         Content="Create"
-                        IsEnabled="{Binding !!Username.Length}"
-                        Command="{Binding NavigateToListenTogetherWindowCommand}"/>
+                        IsEnabled="{Binding Username, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Command="{Binding CreateRoomCommand}"/>
             </Grid>
         </Border>
         
@@ -79,7 +79,8 @@
                     <TextBlock HorizontalAlignment="Center"
                                Margin="15 10 15 0"
                                Text="Enter Room Code"/>
-                    <TextBox Watermark="Room Code:"
+                    <TextBox Text="{Binding RoomCode}"
+                             Watermark="Room Code:"
                              Margin="30 15 30 0" />
                 </StackPanel>
                 
@@ -89,8 +90,16 @@
                         HorizontalAlignment="Center"
                         Margin="0 0 0 15"
                         Content="Join"
-                        IsEnabled="{Binding !!Username.Length}"
-                        Command="{Binding NavigateToListenTogetherWindowCommand}"/>
+                        Command="{Binding JoinRoomCommand}">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="Username" 
+                                     Converter="{x:Static StringConverters.IsNotNullOrEmpty}"/>
+                            <Binding Path="RoomCode" 
+                                     Converter="{x:Static StringConverters.IsNotNullOrEmpty}"/>
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
             </Grid>
         </Border>
     </Grid>
