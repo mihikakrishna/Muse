@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Reflection.PortableExecutable;
 using System.Windows.Input;
 using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Commands;
@@ -11,6 +12,7 @@ using ReactiveUI;
 namespace MuseClient.ViewModels;
 public class ListenTogetherWindowViewModel : ViewModelBase
 {
+    private readonly string _username;
     private string _errorMessage;
     private bool _isConnected;
     private string _chatInput;
@@ -20,13 +22,13 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     public ICommand NavigateToHomeWindowCommand { get; }
 
 
-    public static ListenTogetherWindowViewModel CreateConnectedViewModel(NavigationStore navigationStore)
+    public static ListenTogetherWindowViewModel CreateConnectedViewModel(NavigationStore navigationStore, string username)
     {
         var hubConnection = new HubConnectionBuilder()
                     .WithUrl("https://localhost:5001/chatHub")
                     .Build();
         var chatService = new SignalRChatService(hubConnection);
-        var viewModel = new ListenTogetherWindowViewModel(navigationStore, chatService);
+        var viewModel = new ListenTogetherWindowViewModel(navigationStore, chatService, username);
 
         chatService.Connect().ContinueWith(task =>
         {
@@ -39,8 +41,9 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         return viewModel;
     }
 
-    private ListenTogetherWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService)
+    private ListenTogetherWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService, string username)
     {
+        _username = username;
         _errorMessage = string.Empty;
         _chatInput = string.Empty;
 
@@ -57,6 +60,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
 
         chatService.MessageReceived += ChatService_MessageReceived;
     }
+    
     public string ChatInput
     {
         get => _chatInput;
