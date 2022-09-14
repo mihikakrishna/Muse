@@ -6,23 +6,33 @@ namespace MuseServer.Hubs
 {
     public class RoomHub : Hub
     {
-        private HashSet<string> _roomCodes = new HashSet<string>();
+        private HashSet<string> _roomCodes;
+
+        public RoomHub()
+        {
+            _roomCodes = new HashSet<string>();
+        }
 
         public Task CreateRoom()
         {
-            Random _rdm = new Random();
-            var roomCode = _rdm.Next(0, 9999).ToString();
+            var random = new Random();
+            var roomCode = random.Next(0, 10000).ToString("D4");
+            while (_roomCodes.Contains(roomCode))
+            {
+                roomCode = random.Next(0, 10000).ToString("D4");
+            }
+            _roomCodes.Add(roomCode);
             return Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
         }
 
         public Task JoinRoom(RoomMessage roomMessage)
         {
             return Groups.AddToGroupAsync(Context.ConnectionId, roomMessage.RoomId);
-            //await Clients.Group(roomCode).SendAsync("ReceiveMessage", user, " joined to " + roomCode).ConfigureAwait(true);
         }
 
         public Task LeaveRoom(RoomMessage roomMessage)
         {
+            _roomCodes.Remove(roomMessage.RoomId);
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, roomMessage.RoomId);
         }
 
