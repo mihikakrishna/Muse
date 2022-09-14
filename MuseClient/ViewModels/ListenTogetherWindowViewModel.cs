@@ -11,6 +11,8 @@ using ReactiveUI;
 namespace MuseClient.ViewModels;
 public class ListenTogetherWindowViewModel : ViewModelBase
 {
+    private readonly string _username;
+    private readonly string _roomCode;
     private string _errorMessage;
     private bool _isConnected;
     private string _chatInput;
@@ -20,13 +22,20 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     public ICommand NavigateToHomeWindowCommand { get; }
 
 
-    public static ListenTogetherWindowViewModel CreateConnectedViewModel(NavigationStore navigationStore)
+    public static ListenTogetherWindowViewModel CreateConnectedViewModel(
+        NavigationStore navigationStore, 
+        string username, 
+        string roomCode)
     {
         var hubConnection = new HubConnectionBuilder()
                     .WithUrl("https://localhost:5001/chatHub")
                     .Build();
         var chatService = new SignalRChatService(hubConnection);
-        var viewModel = new ListenTogetherWindowViewModel(navigationStore, chatService);
+        var viewModel = new ListenTogetherWindowViewModel(
+            navigationStore, 
+            chatService, 
+            username, 
+            roomCode);
 
         chatService.Connect().ContinueWith(task =>
         {
@@ -39,8 +48,14 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         return viewModel;
     }
 
-    private ListenTogetherWindowViewModel(NavigationStore navigationStore, SignalRChatService chatService)
+    private ListenTogetherWindowViewModel(
+        NavigationStore navigationStore, 
+        SignalRChatService chatService, 
+        string username, 
+        string roomCode)
     {
+        _username = username;
+        _roomCode = roomCode;
         _errorMessage = string.Empty;
         _chatInput = string.Empty;
 
@@ -57,17 +72,17 @@ public class ListenTogetherWindowViewModel : ViewModelBase
 
         chatService.MessageReceived += ChatService_MessageReceived;
     }
+
+    public string Username => _username;
+    
+    public string RoomCode => _roomCode;
+    
     public string ChatInput
     {
         get => _chatInput;
         set => this.RaiseAndSetIfChanged(ref _chatInput, value);
     }
 
-    private void ChatService_MessageReceived(ChatMessage chatMessage)
-    {
-        Messages.Add(chatMessage.Message);
-        Console.WriteLine(chatMessage.Message);
-    }
 
     public string ErrorMessage
     {
@@ -79,6 +94,12 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     {
         get => _isConnected;
         set => this.RaiseAndSetIfChanged(ref _isConnected, value);
+    }
+    
+    private void ChatService_MessageReceived(ChatMessage chatMessage)
+    {
+        Messages.Add(chatMessage.Message);
+        Console.WriteLine(chatMessage.Message);
     }
 
 }

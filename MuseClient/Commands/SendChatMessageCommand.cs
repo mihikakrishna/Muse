@@ -24,7 +24,11 @@ public class SendChatMessageCommand : ICommand
     {
         try
         {
-            var chatMessage = new ChatMessage(_viewModel.ChatInput);
+            var chatMessage = new ChatMessage(
+                message: _viewModel.ChatInput,
+                username: _viewModel.Username,
+                roomCode: _viewModel.RoomCode,
+                timestamp: DateTime.Now);
             await _chatService.SendMessage(chatMessage);
             _viewModel.ChatInput = string.Empty;
             _viewModel.ErrorMessage = string.Empty;

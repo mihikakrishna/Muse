@@ -4,10 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MuseClient.Views.HomeWindow">
-    <Grid ColumnDefinitions="*,60,*" Margin="60 20 60 30">
+    <Grid RowDefinitions="50,*" ColumnDefinitions="*,60,*" Margin="60 20 60 30">
+        
+        <!-- Create Username Panel -->
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                Background="{DynamicResource DarkPaletteColor}"
+                Height="60"
+                BorderBrush="Black" 
+                BorderThickness="2"
+                Margin="0 0 0 20">
+            <Grid ColumnDefinitions="Auto,*">
+                
+                <!-- Username Panel Header -->
+                <TextBlock Grid.Column="0" Classes="header"
+                           VerticalAlignment="Center"
+                           Margin="20 0 0 0"
+                           Text="Enter Username:"/>
+                
+                <!-- Username Entry TextBox -->
+                <TextBox Grid.Column="1" 
+                         Background="{DynamicResource LightPaletteColor}"
+                         Text="{Binding Username}"
+                         VerticalAlignment="Center"
+                         Height="20"
+                         Watermark="Username:"
+                         Margin="20 0 20 0" />
+            </Grid>
+        </Border>
         
         <!-- Create Room Panel -->
-        <Border Grid.Column="0" BorderBrush="Black" BorderThickness="2">
+        <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="2">
             <Grid RowDefinitions="Auto,*,Auto">
                 
                 <!-- Panel Header -->
@@ -30,13 +56,14 @@
                 <Button Grid.Row="2" 
                         HorizontalAlignment="Center" 
                         Margin="0 0 0 15"
-                        Content="Create" 
-                        Command="{Binding NavigateToListenTogetherWindowCommand}"/>
+                        Content="Create"
+                        IsEnabled="{Binding Username, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Command="{Binding CreateRoomCommand}"/>
             </Grid>
         </Border>
         
         <!-- Join Room Panel -->
-        <Border Grid.Column="2" BorderBrush="Black" BorderThickness="2">
+        <Border Grid.Row="1" Grid.Column="2" BorderBrush="Black" BorderThickness="2">
             <Grid RowDefinitions="Auto,*,Auto">
                 
                 <!-- Panel Header -->
@@ -52,7 +79,8 @@
                     <TextBlock HorizontalAlignment="Center"
                                Margin="15 10 15 0"
                                Text="Enter Room Code"/>
-                    <TextBox Watermark="Room Code:"
+                    <TextBox Text="{Binding RoomCode}"
+                             Watermark="Room Code:"
                              Margin="30 15 30 0" />
                 </StackPanel>
                 
@@ -62,7 +90,16 @@
                         HorizontalAlignment="Center"
                         Margin="0 0 0 15"
                         Content="Join"
-                        Command="{Binding NavigateToListenTogetherWindowCommand}"/>
+                        Command="{Binding JoinRoomCommand}">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="Username" 
+                                     Converter="{x:Static StringConverters.IsNotNullOrEmpty}"/>
+                            <Binding Path="RoomCode" 
+                                     Converter="{x:Static StringConverters.IsNotNullOrEmpty}"/>
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
             </Grid>
         </Border>
     </Grid>
