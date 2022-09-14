@@ -31,8 +31,8 @@ public class HomeWindowViewModel : ViewModelBase
 
     public void CreateRoomCommand()
     {
-        Console.WriteLine("Create Room");
-        // send roomId to server to createRoom
+        // send roomId to server to createRoom, save result in _roomCode and continue
+        _roomCode = "1234"; // since server logic isnt there yet to generate our room code - hardcoding "1234" for now
         _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(
             navigationStore: _navigationStore, 
             username: _username, 
@@ -41,8 +41,7 @@ public class HomeWindowViewModel : ViewModelBase
 
     public void JoinRoomCommand()
     {
-        Console.WriteLine("Join room");
-        // send roomId to server to ValidateRoom
+        // send roomId to server to ValidateRoom, if valid then continue, else throw an error window
         _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(
             navigationStore: _navigationStore, 
             username: _username, 
