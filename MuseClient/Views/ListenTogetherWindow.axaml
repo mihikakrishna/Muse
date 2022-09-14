@@ -41,7 +41,25 @@
             <!-- Chat Box Window -->
             <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1 1 0 0">
                 <ListBox Background="{DynamicResource LightPaletteColor}"
-                         Items="{Binding Messages}"/>
+                         Items="{Binding Messages}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid RowDefinitions="*,*" ColumnDefinitions="Auto,*">
+                                <TextBlock Grid.Row="0" Grid.Column="0" 
+                                           Classes="chatname"
+                                           Text="{Binding Username}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" 
+                                           Classes="chattime"
+                                           Margin="5 0 0 0"
+                                           Text="{Binding Timestamp}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                                           Margin="0 2 0 0"
+                                           Classes="chattext"
+                                           Text="{Binding Message}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Border>
             
             <!-- Chat Input Text Window -->
