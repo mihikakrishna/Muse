@@ -73,19 +73,17 @@ public class ListenTogetherWindowViewModel : ViewModelBase
 
         chatService.MessageReceived += ChatService_MessageReceived;
     }
+
+    public string Username => _username;
     
     public string RoomCode => _roomCode;
+    
     public string ChatInput
     {
         get => _chatInput;
         set => this.RaiseAndSetIfChanged(ref _chatInput, value);
     }
 
-    private void ChatService_MessageReceived(ChatMessage chatMessage)
-    {
-        Messages.Add(chatMessage.Message);
-        Console.WriteLine(chatMessage.Message);
-    }
 
     public string ErrorMessage
     {
@@ -97,6 +95,12 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     {
         get => _isConnected;
         set => this.RaiseAndSetIfChanged(ref _isConnected, value);
+    }
+    
+    private void ChatService_MessageReceived(ChatMessage chatMessage)
+    {
+        Messages.Add(chatMessage.Message);
+        Console.WriteLine(chatMessage.Message);
     }
 
 }
