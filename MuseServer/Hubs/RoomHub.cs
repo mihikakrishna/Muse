@@ -6,39 +6,54 @@ namespace MuseServer.Hubs
 {
     public class RoomHub : Hub
     {
-        private HashSet<string> _roomCodes;
+        private HashSet<string> _freeRooms;
+        private HashSet<string> _usedRooms;
+        private Dictionary<string, int> _roomSizes;
 
         public RoomHub()
         {
-            _roomCodes = new HashSet<string>();
+            _freeRooms = new HashSet<string>();
+            _usedRooms = new HashSet<string>();
+            _roomSizes = new Dictionary<string, int>();
+
+            for (int i = 0; i < 10000; i++)
+            {
+                _freeRooms.Add(i.ToString("D4"));
+            }
         }
 
         public Task CreateRoom()
         {
             var random = new Random();
-            var roomCode = random.Next(0, 10000).ToString("D4");
-            while (_roomCodes.Contains(roomCode))
-            {
-                roomCode = random.Next(0, 10000).ToString("D4");
-            }
-            _roomCodes.Add(roomCode);
-            return Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
+            var roomId = _freeRooms.ElementAt(random.Next(_freeRooms.Count));
+
+            _freeRooms.Remove(roomId);
+            _usedRooms.Add(roomId);
+            _roomSizes[roomId] = 1;
+
+            return Groups.AddToGroupAsync(Context.ConnectionId, roomId);
         }
 
         public Task JoinRoom(RoomMessage roomMessage)
         {
+            _roomSizes[roomMessage.RoomId]++;
             return Groups.AddToGroupAsync(Context.ConnectionId, roomMessage.RoomId);
         }
 
         public Task LeaveRoom(RoomMessage roomMessage)
         {
-            _roomCodes.Remove(roomMessage.RoomId);
+            _roomSizes[roomMessage.RoomId]--;
+            if (_roomSizes[roomMessage.RoomId] == 0)
+            {
+                _usedRooms.Remove(roomMessage.RoomId);
+                _freeRooms.Add(roomMessage.RoomId);
+            }
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, roomMessage.RoomId);
         }
 
         public bool ValidateRoom(RoomMessage roomMessage)
         {
-            return _roomCodes.Contains(roomMessage.RoomId);
+            return _usedRooms.Contains(roomMessage.RoomId);
         }
     }
 }
