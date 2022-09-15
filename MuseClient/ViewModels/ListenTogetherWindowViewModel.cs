@@ -23,8 +23,8 @@ public class ListenTogetherWindowViewModel : ViewModelBase
 
 
     public static ListenTogetherWindowViewModel CreateConnectedViewModel(
-        NavigationStore navigationStore, 
-        string username, 
+        NavigationStore navigationStore,
+        string username,
         string roomCode)
     {
         var hubConnection = new HubConnectionBuilder()
@@ -32,9 +32,9 @@ public class ListenTogetherWindowViewModel : ViewModelBase
                     .Build();
         var chatService = new SignalRChatService(hubConnection);
         var viewModel = new ListenTogetherWindowViewModel(
-            navigationStore, 
-            chatService, 
-            username, 
+            navigationStore,
+            chatService,
+            username,
             roomCode);
 
         chatService.Connect().ContinueWith(task =>
@@ -49,9 +49,9 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     }
 
     private ListenTogetherWindowViewModel(
-        NavigationStore navigationStore, 
-        SignalRChatService chatService, 
-        string username, 
+        NavigationStore navigationStore,
+        SignalRChatService chatService,
+        string username,
         string roomCode)
     {
         _username = username;
@@ -74,9 +74,9 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     }
 
     public string Username => _username;
-    
+
     public string RoomCode => _roomCode;
-    
+
     public string ChatInput
     {
         get => _chatInput;
@@ -95,7 +95,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         get => _isConnected;
         set => this.RaiseAndSetIfChanged(ref _isConnected, value);
     }
-    
+
     private void ChatService_MessageReceived(ChatMessage chatMessage)
     {
         Messages.Add(chatMessage);

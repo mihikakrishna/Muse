@@ -9,7 +9,7 @@ public class HomeWindowViewModel : ViewModelBase
 {
     private string _username;
     private string _roomCode;
-    
+
     public ICommand CreateRoomCommand { get; }
     public ICommand JoinRoomCommand { get; }
 
@@ -26,12 +26,12 @@ public class HomeWindowViewModel : ViewModelBase
     {
         get => _username;
         set => this.RaiseAndSetIfChanged(ref _username, value);
-        }
+    }
 
     public string RoomCode
     {
         get => _roomCode;
         set => this.RaiseAndSetIfChanged(ref _roomCode, value);
     }
-    
+
 }

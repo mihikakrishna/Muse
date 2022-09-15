@@ -2,13 +2,13 @@
 {
     public class RoomMessage
     {
-        private readonly string _roomId;
+        private readonly string _roomCode;
 
-        public RoomMessage(string roomId)
+        public RoomMessage(string roomCode)
         {
-            _roomId = roomId;
+            _roomCode = roomCode;
         }
 
-        public string RoomId => _roomId;
+        public string roomCode => _roomCode;
     }
 }

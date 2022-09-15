@@ -16,44 +16,57 @@ namespace MuseServer.Hubs
             _usedRooms = new HashSet<string>();
             _roomSizes = new Dictionary<string, int>();
 
-            for (int i = 0; i < 10000; i++)
+            for (int roomCode = 0; roomCode < 10000; roomCode++)
             {
-                _freeRooms.Add(i.ToString("D4"));
+                _freeRooms.Add(roomCode.ToString("D4"));
             }
         }
 
         public Task CreateRoom()
         {
             var random = new Random();
-            var roomId = _freeRooms.ElementAt(random.Next(_freeRooms.Count));
+            var roomCode = _freeRooms.ElementAt(random.Next(_freeRooms.Count));
 
-            _freeRooms.Remove(roomId);
-            _usedRooms.Add(roomId);
-            _roomSizes[roomId] = 1;
+            _freeRooms.Remove(roomCode);
+            _usedRooms.Add(roomCode);
+            _roomSizes[roomCode] = 1;
 
-            return Groups.AddToGroupAsync(Context.ConnectionId, roomId);
+            return Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
         }
 
         public Task JoinRoom(RoomMessage roomMessage)
         {
-            _roomSizes[roomMessage.RoomId]++;
-            return Groups.AddToGroupAsync(Context.ConnectionId, roomMessage.RoomId);
+            if (!ValidateRoom(roomMessage))
+            {
+                Console.WriteLine($"Key [{roomMessage.roomCode}] not found in _usedRooms");
+                return Task.CompletedTask;
+            }
+
+            _roomSizes[roomMessage.roomCode]++;
+            return Groups.AddToGroupAsync(Context.ConnectionId, roomMessage.roomCode);
         }
 
         public Task LeaveRoom(RoomMessage roomMessage)
         {
-            _roomSizes[roomMessage.RoomId]--;
-            if (_roomSizes[roomMessage.RoomId] == 0)
+            if (!ValidateRoom(roomMessage))
             {
-                _usedRooms.Remove(roomMessage.RoomId);
-                _freeRooms.Add(roomMessage.RoomId);
+                Console.WriteLine($"Key [{roomMessage.roomCode}] not found in _usedRooms");
+                return Task.CompletedTask;
             }
-            return Groups.RemoveFromGroupAsync(Context.ConnectionId, roomMessage.RoomId);
+
+            _roomSizes[roomMessage.roomCode]--;
+            if (_roomSizes[roomMessage.roomCode] == 0)
+            {
+                _usedRooms.Remove(roomMessage.roomCode);
+                _freeRooms.Add(roomMessage.roomCode);
+            }
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, roomMessage.roomCode);
         }
 
         public bool ValidateRoom(RoomMessage roomMessage)
         {
-            return _usedRooms.Contains(roomMessage.RoomId);
+            return _usedRooms.Contains(roomMessage.roomCode);
         }
+
     }
 }

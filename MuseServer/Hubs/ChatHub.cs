@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using MuseDomain.Models;
 
 namespace MuseServer.Hubs
@@ -8,7 +7,7 @@ namespace MuseServer.Hubs
     {
         public async Task SendMessage(ChatMessage chatMessage)
         {
-            //await Clients.Group(chatMessage.RoomID).SendAsync("ReceiveMessage", chatMessage);
+            await Clients.Group(chatMessage.RoomCode).SendAsync("ReceiveMessage", chatMessage);
         }
     }
 }
