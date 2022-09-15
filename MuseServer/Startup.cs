@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MuseServer.Hubs;
 
 namespace MuseServer
 {
@@ -22,6 +23,7 @@ namespace MuseServer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<ChatHub>("/roomHub");
             });
         }
     }

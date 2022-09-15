@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.SignalR;
 using MuseDomain.Models;
 
-namespace MuseServer
+namespace MuseServer.Hubs
 {
     public class ChatHub : Hub
     {
-
         public async Task SendMessage(ChatMessage chatMessage)
         {
-            await Clients.All.SendAsync("ReceiveMessage", chatMessage);
+            //await Clients.Group(chatMessage.RoomID).SendAsync("ReceiveMessage", chatMessage);
         }
     }
 }
