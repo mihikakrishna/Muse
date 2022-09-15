@@ -16,7 +16,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     private string _errorMessage;
     private bool _isConnected;
     private string _chatInput;
-    public ObservableCollection<string> Messages { get; }
+    public ObservableCollection<ChatMessage> Messages { get; }
     public ObservableCollection<string> Songs { get; }
     public ICommand SendChatMessageCommand { get; }
     public ICommand NavigateToHomeWindowCommand { get; }
@@ -28,7 +28,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         string roomCode)
     {
         var hubConnection = new HubConnectionBuilder()
-                    .WithUrl("https://localhost:5001/chatHub")
+                    .WithUrl("http://localhost:5000/chatHub")
                     .Build();
         var chatService = new SignalRChatService(hubConnection);
         var viewModel = new ListenTogetherWindowViewModel(
@@ -60,7 +60,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         _chatInput = string.Empty;
 
         Songs = new ObservableCollection<string>();
-        Messages = new ObservableCollection<string>();
+        Messages = new ObservableCollection<ChatMessage>();
 
         // dummy data to test (delete once chat & song features work)
         Songs.Add("Song 1");
@@ -98,7 +98,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     
     private void ChatService_MessageReceived(ChatMessage chatMessage)
     {
-        Messages.Add(chatMessage.Message);
+        Messages.Add(chatMessage);
         Console.WriteLine(chatMessage.Message);
     }
 

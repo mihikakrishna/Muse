@@ -8,4 +8,16 @@
                 <Setter Property="FontWeight" Value="Heavy"/>
                 <Setter Property="FontSize" Value="20"/>
         </Style>
+        <Style Selector="TextBlock.chatname">
+                <Setter Property="FontWeight" Value="Heavy"/>
+                <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style Selector="TextBlock.chattime">
+                <Setter Property="FontWeight" Value="ExtraLight"/>
+                <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style Selector="TextBlock.chattext">
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="FontSize" Value="18"/>
+        </Style>
 </Styles>
