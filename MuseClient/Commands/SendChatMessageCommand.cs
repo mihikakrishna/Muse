@@ -28,7 +28,7 @@ public class SendChatMessageCommand : ICommand
                 message: _viewModel.ChatInput,
                 username: _viewModel.Username,
                 roomCode: _viewModel.RoomCode,
-                timestamp: DateTime.Now);
+                timestamp: DateTime.UtcNow);
             await _chatService.SendMessage(chatMessage);
             _viewModel.ChatInput = string.Empty;
             _viewModel.ErrorMessage = string.Empty;
