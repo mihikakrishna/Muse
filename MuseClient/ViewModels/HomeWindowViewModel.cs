@@ -38,7 +38,9 @@ public class HomeWindowViewModel : ViewModelBase
         CreateRoomCommand = new CreateRoomCommand(this, navigationStore, chatRoomService);
         JoinRoomCommand = new JoinRoomCommand(this, navigationStore);
 
-        //chatRoomService.CreatedRoom += chatRoomService_CreatedRoom;
+        chatRoomService.ReceivedCreatedRoom += chatRoomService_CreatedRoom;
+        chatRoomService.JoinedRoom += chatRoomService_JoinedRoom;
+        chatRoomService.LeftRoom += chatRoomService_LeftRoom;
     }
 
     public string Username
@@ -55,19 +57,19 @@ public class HomeWindowViewModel : ViewModelBase
 
     private void chatRoomService_CreatedRoom(RoomMessage roomMessage)
     {
-        _roomCode = roomMessage.roomCode;
+        _roomCode = roomMessage.RoomCode;
         Console.WriteLine(_roomCode);
     }
 
     private void chatRoomService_JoinedRoom(RoomMessage roomMessage)
     {
-        _roomCode = roomMessage.roomCode;
+        _roomCode = roomMessage.RoomCode;
         Console.WriteLine(_roomCode);
     }
 
-    private void chatRoomService_(RoomMessage roomMessage)
+    private void chatRoomService_LeftRoom(RoomMessage roomMessage)
     {
-        _roomCode = roomMessage.roomCode;
+        _roomCode = roomMessage.RoomCode;
         Console.WriteLine(_roomCode);
     }
 

@@ -3,6 +3,7 @@ using System.Windows.Input;
 using MuseClient.Services;
 using MuseClient.Stores;
 using MuseClient.ViewModels;
+using MuseDomain.Models;
 
 namespace MuseClient.Commands;
 
@@ -23,10 +24,13 @@ public class CreateRoomCommand : ICommand
 
     public bool CanExecute(object? parameter) => true;
 
-    public void Execute(object? parameter)
+    public async void Execute(object? parameter)
     {
-        // send roomCode to server to createRoom, save result in _roomCode and continue
-        _viewModel.RoomCode = "1234"; // since server logic isnt there yet to generate our room code - hardcoding "1234" for now
+        // send RoomCode to server to createRoom, save result in _roomCode and continue
+        var roomMessage = new RoomMessage("");
+        await _chatroomService.CreateRoom(roomMessage);
+        Console.WriteLine(roomMessage.RoomCode);
+        _viewModel.RoomCode = roomMessage.RoomCode;
         _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(
             navigationStore: _navigationStore,
             username: _viewModel.Username,

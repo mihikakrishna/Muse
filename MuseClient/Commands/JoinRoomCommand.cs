@@ -22,7 +22,7 @@ public class JoinRoomCommand : ICommand
 
     public void Execute(object? parameter)
     {
-        // send roomCode to server to ValidateRoom, if valid then continue, else throw an error window
+        // send RoomCode to server to ValidateRoom, if valid then continue, else throw an error window
         _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(
             navigationStore: _navigationStore,
             username: _viewModel.Username,

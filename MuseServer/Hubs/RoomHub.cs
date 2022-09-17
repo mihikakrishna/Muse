@@ -22,8 +22,9 @@ namespace MuseServer.Hubs
             }
         }
 
-        public async Task CreateRoom()
+        public async Task CreateRoom(RoomMessage roomMessage)
         {
+            
             var random = new Random();
             var roomCode = _freeRooms.ElementAt(random.Next(_freeRooms.Count));
 
@@ -31,7 +32,11 @@ namespace MuseServer.Hubs
             _usedRooms.Add(roomCode);
             _roomSizes[roomCode] = 1;
 
-            await Clients.Client(roomCode).SendAsync("RecievedCreatedRoom", roomCode);
+            Console.WriteLine("Created room: " + roomCode);
+            roomMessage.RoomCode = roomCode;
+
+            await Clients.Client(roomCode).SendAsync("ReceivedCreatedRoom", roomMessage);
+            
             await Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
         }
 
@@ -39,13 +44,13 @@ namespace MuseServer.Hubs
         {
             if (ValidateRoom(roomMessage))
             {
-                _roomSizes[roomMessage.roomCode]++;
-                await Clients.Client(roomMessage.roomCode).SendAsync("JoinedRoom");
-                await Groups.AddToGroupAsync(Context.ConnectionId, roomMessage.roomCode);
+                _roomSizes[roomMessage.RoomCode]++;
+                await Clients.Client(roomMessage.RoomCode).SendAsync("JoinedRoom");
+                await Groups.AddToGroupAsync(Context.ConnectionId, roomMessage.RoomCode);
             }
             else
             {
-                Console.WriteLine($"Key [{roomMessage.roomCode}] not found in _usedRooms");
+                Console.WriteLine($"Key [{roomMessage.RoomCode}] not found in _usedRooms");
             }
         }
 
@@ -53,24 +58,24 @@ namespace MuseServer.Hubs
         {
             if (ValidateRoom(roomMessage))
             {
-                _roomSizes[roomMessage.roomCode]--;
-                if (_roomSizes[roomMessage.roomCode] == 0)
+                _roomSizes[roomMessage.RoomCode]--;
+                if (_roomSizes[roomMessage.RoomCode] == 0)
                 {
-                    _usedRooms.Remove(roomMessage.roomCode);
-                    _freeRooms.Add(roomMessage.roomCode);
+                    _usedRooms.Remove(roomMessage.RoomCode);
+                    _freeRooms.Add(roomMessage.RoomCode);
                 }
-                await Clients.Client(roomMessage.roomCode).SendAsync("LeftRoom");
-                await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomMessage.roomCode);
+                await Clients.Client(roomMessage.RoomCode).SendAsync("LeftRoom");
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomMessage.RoomCode);
             }
             else
             {
-                Console.WriteLine($"Key [{roomMessage.roomCode}] not found in _usedRooms");
+                Console.WriteLine($"Key [{roomMessage.RoomCode}] not found in _usedRooms");
             }  
         }
 
         public bool ValidateRoom(RoomMessage roomMessage)
         {
-            return _usedRooms.Contains(roomMessage.roomCode);
+            return _usedRooms.Contains(roomMessage.RoomCode);
         }
 
     }
