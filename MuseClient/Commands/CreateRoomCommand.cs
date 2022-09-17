@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Input;
+using MuseClient.Services;
 using MuseClient.Stores;
 using MuseClient.ViewModels;
 
@@ -9,11 +10,13 @@ public class CreateRoomCommand : ICommand
 {
     private readonly HomeWindowViewModel _viewModel;
     private readonly NavigationStore _navigationStore;
+    private readonly SignalRChatroomService _chatroomService;
 
-    public CreateRoomCommand(HomeWindowViewModel viewModel, NavigationStore navigationStore)
+    public CreateRoomCommand(HomeWindowViewModel viewModel, NavigationStore navigationStore, SignalRChatroomService chatroomService)
     {
         _viewModel = viewModel;
         _navigationStore = navigationStore;
+        _chatroomService = chatroomService;
     }
 
     public event EventHandler? CanExecuteChanged = delegate { };

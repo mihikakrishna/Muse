@@ -23,7 +23,7 @@ namespace MuseServer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<ChatHub>("/chatHub");
-                endpoints.MapHub<ChatHub>("/roomHub");
+                endpoints.MapHub<RoomHub>("/roomHub");
             });
         }
     }

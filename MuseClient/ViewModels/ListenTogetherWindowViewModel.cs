@@ -27,10 +27,11 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         string username,
         string roomCode)
     {
-        var hubConnection = new HubConnectionBuilder()
+        var chatHubConnection = new HubConnectionBuilder()
                     .WithUrl("http://localhost:5000/chatHub")
                     .Build();
-        var chatService = new SignalRChatService(hubConnection);
+        var chatService = new SignalRChatService(chatHubConnection);
+
         var viewModel = new ListenTogetherWindowViewModel(
             navigationStore,
             chatService,
