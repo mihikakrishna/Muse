@@ -11,6 +11,7 @@ namespace MuseClient.ViewModels;
 
 public class HomeWindowViewModel : ViewModelBase
 {
+    private readonly NavigationStore _navigationStore;
     private string _username;
     private string _roomCode;
     public ICommand CreateRoomCommand { get; }
@@ -18,6 +19,8 @@ public class HomeWindowViewModel : ViewModelBase
 
     public HomeWindowViewModel(NavigationStore navigationStore)
     {
+        _navigationStore = navigationStore;
+        
         _username = string.Empty;
         _roomCode = string.Empty;
 
@@ -35,7 +38,7 @@ public class HomeWindowViewModel : ViewModelBase
             }
         });
 
-        CreateRoomCommand = new CreateRoomCommand(this, navigationStore, chatRoomService);
+        CreateRoomCommand = new CreateRoomCommand(chatRoomService);
         JoinRoomCommand = new JoinRoomCommand(this, navigationStore);
 
         chatRoomService.ReceivedCreatedRoom += chatRoomService_CreatedRoom;
@@ -57,8 +60,10 @@ public class HomeWindowViewModel : ViewModelBase
 
     private void chatRoomService_CreatedRoom(RoomMessage roomMessage)
     {
-        _roomCode = roomMessage.RoomCode;
-        Console.WriteLine(_roomCode);
+        _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(
+            navigationStore: _navigationStore,
+            username: _username,
+            roomCode: roomMessage.RoomCode);
     }
 
     private void chatRoomService_JoinedRoom(RoomMessage roomMessage)

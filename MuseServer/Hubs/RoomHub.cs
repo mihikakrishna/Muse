@@ -35,7 +35,7 @@ namespace MuseServer.Hubs
             Console.WriteLine("Created room: " + roomCode);
             roomMessage.RoomCode = roomCode;
 
-            await Clients.Client(roomCode).SendAsync("ReceivedCreatedRoom", roomMessage);
+            await Clients.Client(Context.ConnectionId).SendAsync("ReceivedCreatedRoom", roomMessage);
             
             await Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
         }
