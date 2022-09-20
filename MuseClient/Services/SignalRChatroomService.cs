@@ -9,18 +9,20 @@ namespace MuseClient.Services
     {
         private readonly HubConnection _connection;
 
-        public event Action<RoomMessage>? ReceivedCreatedRoom;
-        public event Action<RoomMessage>? JoinedRoom;
-        public event Action<RoomMessage>? LeftRoom;
+        public event Action<RoomMessage>? CreatedRoom;
+        public event Action<bool>? ValidatedRoom;
+        public event Action? JoinedRoom;
+        public event Action? LeftRoom;
+        
         public SignalRChatroomService(HubConnection connection)
         {
             _connection = connection;
-            _connection.On<RoomMessage>("ReceivedCreatedRoom", (RoomMessage) 
-                => ReceivedCreatedRoom?.Invoke(RoomMessage));
-            _connection.On<RoomMessage>("JoinedRoom", (RoomMessage) 
-                => JoinedRoom?.Invoke(RoomMessage));
-            _connection.On<RoomMessage>("LeftRoom", (RoomMessage) 
-                => LeftRoom?.Invoke(RoomMessage));
+            _connection.On<RoomMessage>("CreatedRoom", (RoomMessage) 
+                => CreatedRoom?.Invoke(RoomMessage));
+            _connection.On<bool>("ValidatedRoom", (IsRoomValid) 
+                => ValidatedRoom?.Invoke(IsRoomValid));
+            _connection.On("JoinedRoom", () => JoinedRoom?.Invoke());
+            _connection.On("LeftRoom", () => LeftRoom?.Invoke());
         }
         public async Task Connect()
         {
@@ -36,15 +38,21 @@ namespace MuseClient.Services
 
         public async Task JoinRoom(RoomMessage roomMessage)
         {
-            await _connection.SendAsync("JoinRoom", roomMessage.RoomCode);
+            await _connection.SendAsync("JoinRoom", roomMessage);
             Console.WriteLine("Joined Room");
         }
 
         public async Task LeaveRoom(RoomMessage roomMessage)
         {
-            await _connection.SendAsync("LeaveRoom", roomMessage.RoomCode);
+            await _connection.SendAsync("LeaveRoom", roomMessage);
             Console.WriteLine("Left Room");
         }
+
+        public async Task ValidateRoom(RoomMessage roomMessage)
+        {
+            await _connection.SendAsync("ValidateRoom", roomMessage);
+        }
+        
         public async Task Disconnect()
         {
             try

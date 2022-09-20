@@ -12,6 +12,7 @@ namespace MuseClient.ViewModels;
 public class HomeWindowViewModel : ViewModelBase
 {
     private readonly NavigationStore _navigationStore;
+    private readonly SignalRChatroomService _chatroomService;
     private string _username;
     private string _roomCode;
     public ICommand CreateRoomCommand { get; }
@@ -27,8 +28,8 @@ public class HomeWindowViewModel : ViewModelBase
         var chatRoomHubConnection = new HubConnectionBuilder()
                     .WithUrl("http://localhost:5000/roomHub")
                     .Build();
-
         var chatRoomService = new SignalRChatroomService(chatRoomHubConnection);
+        _chatroomService = chatRoomService;
 
         chatRoomService.Connect().ContinueWith(task =>
         {
@@ -39,11 +40,12 @@ public class HomeWindowViewModel : ViewModelBase
         });
 
         CreateRoomCommand = new CreateRoomCommand(chatRoomService);
-        JoinRoomCommand = new JoinRoomCommand(this, navigationStore);
+        JoinRoomCommand = new JoinRoomCommand(this, chatRoomService);
 
-        chatRoomService.ReceivedCreatedRoom += chatRoomService_CreatedRoom;
+        chatRoomService.CreatedRoom += chatRoomService_CreatedRoom;
         chatRoomService.JoinedRoom += chatRoomService_JoinedRoom;
         chatRoomService.LeftRoom += chatRoomService_LeftRoom;
+        chatRoomService.ValidatedRoom += chatRoomService_ValidatedRoom;
     }
 
     public string Username
@@ -66,16 +68,31 @@ public class HomeWindowViewModel : ViewModelBase
             roomCode: roomMessage.RoomCode);
     }
 
-    private void chatRoomService_JoinedRoom(RoomMessage roomMessage)
+    private void chatRoomService_JoinedRoom()
     {
-        _roomCode = roomMessage.RoomCode;
-        Console.WriteLine(_roomCode);
+        _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(
+            navigationStore: _navigationStore,
+            username: _username,
+            roomCode: RoomCode);
     }
 
-    private void chatRoomService_LeftRoom(RoomMessage roomMessage)
+    private void chatRoomService_LeftRoom()
     {
-        _roomCode = roomMessage.RoomCode;
-        Console.WriteLine(_roomCode);
+        Console.WriteLine("Left room");
+    }
+    
+    private async void chatRoomService_ValidatedRoom(bool isRoomValid)
+    {
+        if (!isRoomValid)
+        {
+            Console.WriteLine("Invalid room. Try again.");
+            RoomCode = "";
+            return;
+        }
+
+        var roomMessage = new RoomMessage(roomCode: RoomCode);
+        await _chatroomService.JoinRoom(roomMessage);
+
     }
 
 }

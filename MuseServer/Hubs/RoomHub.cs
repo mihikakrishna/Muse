@@ -24,7 +24,6 @@ namespace MuseServer.Hubs
 
         public async Task CreateRoom(RoomMessage roomMessage)
         {
-            
             var random = new Random();
             var roomCode = _freeRooms.ElementAt(random.Next(_freeRooms.Count));
 
@@ -34,13 +33,13 @@ namespace MuseServer.Hubs
 
             roomMessage.RoomCode = roomCode;
             
-            await Clients.Client(Context.ConnectionId).SendAsync("ReceivedCreatedRoom", roomMessage);
+            await Clients.Client(Context.ConnectionId).SendAsync("CreatedRoom", roomMessage);
             await Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
         }
 
         public async Task JoinRoom(RoomMessage roomMessage)
         {
-            if (!ValidateRoom(roomMessage))
+            if (!IsRoomUsed(roomMessage))
             {
                 return;
             }
@@ -52,7 +51,7 @@ namespace MuseServer.Hubs
 
         public async Task LeaveRoom(RoomMessage roomMessage)
         {
-            if (!ValidateRoom(roomMessage))
+            if (!IsRoomUsed(roomMessage))
             {
                 return;
             }
@@ -68,7 +67,13 @@ namespace MuseServer.Hubs
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomMessage.RoomCode);
         }
 
-        public bool ValidateRoom(RoomMessage roomMessage)
+        public async Task ValidateRoom(RoomMessage roomMessage)
+        {
+            var isRoomValid = _usedRooms.Contains(roomMessage.RoomCode) && _roomSizes.ContainsKey(roomMessage.RoomCode);
+            await Clients.Client(Context.ConnectionId).SendAsync("ValidatedRoom", isRoomValid);
+        }
+
+        private bool IsRoomUsed(RoomMessage roomMessage)
         {
             if (!_usedRooms.Contains(roomMessage.RoomCode))
             {
