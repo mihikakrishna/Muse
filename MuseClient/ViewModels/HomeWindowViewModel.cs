@@ -12,7 +12,7 @@ namespace MuseClient.ViewModels;
 public class HomeWindowViewModel : ViewModelBase
 {
     private readonly NavigationStore _navigationStore;
-    private readonly SignalRChatroomService _chatroomService;
+    private readonly SignalRRoomManagementService _roomManagementService;
     private string _username;
     private string _roomCode;
     public ICommand CreateRoomCommand { get; }
@@ -25,13 +25,13 @@ public class HomeWindowViewModel : ViewModelBase
         _username = string.Empty;
         _roomCode = string.Empty;
 
-        var chatRoomHubConnection = new HubConnectionBuilder()
+        var roomManagementHubConnection = new HubConnectionBuilder()
                     .WithUrl("http://localhost:5000/roomHub")
                     .Build();
-        var chatRoomService = new SignalRChatroomService(chatRoomHubConnection);
-        _chatroomService = chatRoomService;
+        var roomManagementService = new SignalRRoomManagementService(roomManagementHubConnection);
+        _roomManagementService = roomManagementService;
 
-        chatRoomService.Connect().ContinueWith(task =>
+        roomManagementService.Connect().ContinueWith(task =>
         {
             if (task.Exception != null)
             {
@@ -39,13 +39,13 @@ public class HomeWindowViewModel : ViewModelBase
             }
         });
 
-        CreateRoomCommand = new CreateRoomCommand(chatRoomService);
-        JoinRoomCommand = new JoinRoomCommand(this, chatRoomService);
+        CreateRoomCommand = new CreateRoomCommand(roomManagementService);
+        JoinRoomCommand = new JoinRoomCommand(this, roomManagementService);
 
-        chatRoomService.CreatedRoom += chatRoomService_CreatedRoom;
-        chatRoomService.JoinedRoom += chatRoomService_JoinedRoom;
-        chatRoomService.LeftRoom += chatRoomService_LeftRoom;
-        chatRoomService.ValidatedRoom += chatRoomService_ValidatedRoom;
+        roomManagementService.CreatedRoom += roomManagementService_CreatedRoom;
+        roomManagementService.JoinedRoom += roomManagementService_JoinedRoom;
+        roomManagementService.LeftRoom += roomManagementService_LeftRoom;
+        roomManagementService.ValidatedRoom += roomManagementService_ValidatedRoom;
     }
 
     public string Username
@@ -60,7 +60,7 @@ public class HomeWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _roomCode, value);
     }
 
-    private void chatRoomService_CreatedRoom(RoomMessage roomMessage)
+    private void roomManagementService_CreatedRoom(RoomMessage roomMessage)
     {
         _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(
             navigationStore: _navigationStore,
@@ -68,7 +68,7 @@ public class HomeWindowViewModel : ViewModelBase
             roomCode: roomMessage.RoomCode);
     }
 
-    private void chatRoomService_JoinedRoom()
+    private void roomManagementService_JoinedRoom()
     {
         _navigationStore.CurrentViewModel = ListenTogetherWindowViewModel.CreateConnectedViewModel(
             navigationStore: _navigationStore,
@@ -76,12 +76,12 @@ public class HomeWindowViewModel : ViewModelBase
             roomCode: RoomCode);
     }
 
-    private void chatRoomService_LeftRoom()
+    private void roomManagementService_LeftRoom()
     {
         Console.WriteLine("Left room");
     }
     
-    private async void chatRoomService_ValidatedRoom(bool isRoomValid)
+    private async void roomManagementService_ValidatedRoom(bool isRoomValid)
     {
         if (!isRoomValid)
         {
@@ -91,7 +91,7 @@ public class HomeWindowViewModel : ViewModelBase
         }
 
         var roomMessage = new RoomMessage(roomCode: RoomCode);
-        await _chatroomService.JoinRoom(roomMessage);
+        await _roomManagementService.JoinRoom(roomMessage);
 
     }
 

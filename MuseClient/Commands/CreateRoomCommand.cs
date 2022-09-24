@@ -7,11 +7,11 @@ namespace MuseClient.Commands;
 
 public class CreateRoomCommand : ICommand
 {
-    private readonly SignalRChatroomService _chatroomService;
+    private readonly SignalRRoomManagementService _roomManagementService;
 
-    public CreateRoomCommand(SignalRChatroomService chatroomService)
+    public CreateRoomCommand(SignalRRoomManagementService roomManagementService)
     {
-        _chatroomService = chatroomService;
+        _roomManagementService = roomManagementService;
     }
 
     public event EventHandler? CanExecuteChanged = delegate { };
@@ -21,7 +21,7 @@ public class CreateRoomCommand : ICommand
     public async void Execute(object? parameter)
     {
         var roomMessage = new RoomMessage(roomCode: string.Empty);
-        await _chatroomService.CreateRoom(roomMessage);
+        await _roomManagementService.CreateRoom(roomMessage);
     }
 
 }

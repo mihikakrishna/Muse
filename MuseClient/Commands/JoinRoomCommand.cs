@@ -10,12 +10,12 @@ namespace MuseClient.Commands;
 public class JoinRoomCommand : ICommand
 {
     private readonly HomeWindowViewModel _viewModel;
-    private readonly SignalRChatroomService _chatroomService;
+    private readonly SignalRRoomManagementService _roomManagementService;
 
-    public JoinRoomCommand(HomeWindowViewModel viewModel, SignalRChatroomService chatroomService)
+    public JoinRoomCommand(HomeWindowViewModel viewModel, SignalRRoomManagementService roomManagementService)
     {
         _viewModel = viewModel;
-        _chatroomService = chatroomService;
+        _roomManagementService = roomManagementService;
     }
 
     public event EventHandler? CanExecuteChanged = delegate { };
@@ -25,7 +25,7 @@ public class JoinRoomCommand : ICommand
     public async void Execute(object? parameter)
     {
         var roomMessage = new RoomMessage(roomCode: _viewModel.RoomCode);
-        await _chatroomService.ValidateRoom(roomMessage);
+        await _roomManagementService.ValidateRoom(roomMessage);
     }
 
 }

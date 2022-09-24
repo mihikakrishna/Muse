@@ -5,7 +5,7 @@ using MuseDomain.Models;
 
 namespace MuseClient.Services
 {
-    public class SignalRChatroomService
+    public class SignalRRoomManagementService
     {
         private readonly HubConnection _connection;
 
@@ -14,7 +14,7 @@ namespace MuseClient.Services
         public event Action? JoinedRoom;
         public event Action? LeftRoom;
         
-        public SignalRChatroomService(HubConnection connection)
+        public SignalRRoomManagementService(HubConnection connection)
         {
             _connection = connection;
             _connection.On<RoomMessage>("CreatedRoom", (RoomMessage) 
