@@ -9,6 +9,7 @@
             _roomCode = roomCode;
         }
 
-        public string roomCode => _roomCode;
+        public string RoomCode => _roomCode;
+
     }
 }

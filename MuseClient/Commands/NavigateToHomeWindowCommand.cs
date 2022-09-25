@@ -8,12 +8,12 @@ namespace MuseClient.Commands;
 
 public class NavigateToHomeWindowCommand : ICommand
 {
-    private readonly SignalRChatService _chatService;
+    private readonly SignalRMuseService _museService;
     private readonly NavigationStore _navigationStore;
 
-    public NavigateToHomeWindowCommand(SignalRChatService chatService, NavigationStore navigationStore)
+    public NavigateToHomeWindowCommand(SignalRMuseService museService, NavigationStore navigationStore)
     {
-        _chatService = chatService;
+        _museService = museService;
         _navigationStore = navigationStore;
     }
 
@@ -23,7 +23,7 @@ public class NavigateToHomeWindowCommand : ICommand
 
     public async void Execute(object? parameter)
     {
-        await _chatService.Disconnect();
-        _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore);
+        await _museService.Disconnect();
+        _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore, _museService);
     }
 }

@@ -21,36 +21,9 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     public ICommand SendChatMessageCommand { get; }
     public ICommand NavigateToHomeWindowCommand { get; }
 
-
-    public static ListenTogetherWindowViewModel CreateConnectedViewModel(
+    public ListenTogetherWindowViewModel(
         NavigationStore navigationStore,
-        string username,
-        string roomCode)
-    {
-        var hubConnection = new HubConnectionBuilder()
-                    .WithUrl("http://localhost:5000/chatHub")
-                    .Build();
-        var chatService = new SignalRChatService(hubConnection);
-        var viewModel = new ListenTogetherWindowViewModel(
-            navigationStore,
-            chatService,
-            username,
-            roomCode);
-
-        chatService.Connect().ContinueWith(task =>
-        {
-            if (task.Exception != null)
-            {
-                Console.WriteLine("An exception has occured");
-            }
-        });
-
-        return viewModel;
-    }
-
-    private ListenTogetherWindowViewModel(
-        NavigationStore navigationStore,
-        SignalRChatService chatService,
+        SignalRMuseService signalRMuseService,
         string username,
         string roomCode)
     {
@@ -67,10 +40,10 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         Songs.Add("Song 2");
         Songs.Add("Song 3");
 
-        SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
-        NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(chatService, navigationStore);
+        SendChatMessageCommand = new SendChatMessageCommand(this, signalRMuseService);
+        NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(signalRMuseService, navigationStore);
 
-        chatService.MessageReceived += ChatService_MessageReceived;
+        signalRMuseService.MessageReceived += museService_MessageReceived;
     }
 
     public string Username => _username;
@@ -96,7 +69,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isConnected, value);
     }
 
-    private void ChatService_MessageReceived(ChatMessage chatMessage)
+    private void museService_MessageReceived(ChatMessage chatMessage)
     {
         Messages.Add(chatMessage);
         Console.WriteLine(chatMessage.Message);

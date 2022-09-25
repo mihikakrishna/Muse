@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.SignalR.Client;
 using MuseDomain.Models;
 
 namespace MuseClient.Services;
-public class SignalRChatService
+public class SignalRMuseService
 {
     private readonly HubConnection _connection;
 
     public event Action<ChatMessage>? MessageReceived;
-    public SignalRChatService(HubConnection connection)
+    public SignalRMuseService(HubConnection connection)
     {
         _connection = connection;
         _connection.On<ChatMessage>("ReceiveMessage", (chatMessage) => MessageReceived?.Invoke(chatMessage));

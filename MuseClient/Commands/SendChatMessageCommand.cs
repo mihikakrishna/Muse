@@ -8,12 +8,12 @@ namespace MuseClient.Commands;
 public class SendChatMessageCommand : ICommand
 {
     private readonly ListenTogetherWindowViewModel _viewModel;
-    private readonly SignalRChatService _chatService;
+    private readonly SignalRMuseService _museService;
 
-    public SendChatMessageCommand(ListenTogetherWindowViewModel viewModel, SignalRChatService chatService)
+    public SendChatMessageCommand(ListenTogetherWindowViewModel viewModel, SignalRMuseService museService)
     {
         _viewModel = viewModel;
-        _chatService = chatService;
+        _museService = museService;
     }
 
     public event EventHandler? CanExecuteChanged = delegate { };
@@ -29,7 +29,7 @@ public class SendChatMessageCommand : ICommand
                 username: _viewModel.Username,
                 roomCode: _viewModel.RoomCode,
                 timestamp: DateTime.Now);
-            await _chatService.SendMessage(chatMessage);
+            await _museService.SendMessage(chatMessage);
             _viewModel.ChatInput = string.Empty;
             _viewModel.ErrorMessage = string.Empty;
         }
