@@ -68,18 +68,4 @@ public class SignalRMuseService
         await _connection.SendAsync("SendMessage", message);
     }
 
-    public async Task Disconnect()
-    {
-        try
-        {
-            await _connection.StopAsync();
-            Console.WriteLine("Disconnected");
-        }
-        finally
-        {
-            await _connection.DisposeAsync();
-            Console.WriteLine("Disposed");
-        }
-
-    }
 }

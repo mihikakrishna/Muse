@@ -23,7 +23,6 @@ public class NavigateToHomeWindowCommand : ICommand
 
     public async void Execute(object? parameter)
     {
-        await _museService.Disconnect();
         _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore, _museService);
     }
 }
