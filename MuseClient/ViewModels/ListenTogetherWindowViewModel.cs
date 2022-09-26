@@ -1,7 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Commands;
 using MuseClient.Services;
 using MuseClient.Stores;

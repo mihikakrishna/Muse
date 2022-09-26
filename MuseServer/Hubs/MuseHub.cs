@@ -8,9 +8,9 @@ namespace MuseServer.Hubs
 
 
         private readonly static Lazy<HashSet<string>> _freeRooms
-            = new Lazy<HashSet<string>>(() => new HashSet<string>(Enumerable.Range(0,9999).ToList().Select(x => x.ToString("D4"))));
+            = new Lazy<HashSet<string>>(() => new HashSet<string>(Enumerable.Range(0, 9999).ToList().Select(x => x.ToString("D4"))));
 
-        private readonly static Lazy<HashSet<string>> _usedRooms 
+        private readonly static Lazy<HashSet<string>> _usedRooms
             = new Lazy<HashSet<string>>(() => new HashSet<string>());
 
         private readonly static Lazy<Dictionary<string, int>> _roomSizes
@@ -18,7 +18,7 @@ namespace MuseServer.Hubs
 
         public async Task CreateRoom()
         {
-            ValidateLazyGenerated();
+            //ValidateLazyGenerated();
 
             var random = new Random();
             var roomCode = _freeRooms.Value.ElementAt(random.Next(_freeRooms.Value.Count));
@@ -35,7 +35,7 @@ namespace MuseServer.Hubs
 
         public async Task JoinRoom(RoomMessage roomMessage)
         {
-            ValidateLazyGenerated();
+            //ValidateLazyGenerated();
 
             if (!IsRoomUsed(roomMessage))
             {
@@ -76,8 +76,7 @@ namespace MuseServer.Hubs
 
         public async Task SendMessage(ChatMessage chatMessage)
         {
-            //await Clients.Group(chatMessage.RoomCode).SendAsync("ReceiveMessage", chatMessage);
-            await Clients.All.SendAsync("ReceiveMessage", chatMessage);
+            await Clients.Group(chatMessage.RoomCode).SendAsync("ReceiveMessage", chatMessage);
         }
 
         private bool IsRoomUsed(RoomMessage roomMessage)
