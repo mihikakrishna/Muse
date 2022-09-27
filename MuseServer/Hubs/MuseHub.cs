@@ -18,8 +18,6 @@ namespace MuseServer.Hubs
 
         public async Task CreateRoom()
         {
-            //ValidateLazyGenerated();
-
             var random = new Random();
             var roomCode = _freeRooms.Value.ElementAt(random.Next(_freeRooms.Value.Count));
 
@@ -35,8 +33,6 @@ namespace MuseServer.Hubs
 
         public async Task JoinRoom(RoomMessage roomMessage)
         {
-            //ValidateLazyGenerated();
-
             if (!IsRoomUsed(roomMessage))
             {
                 return;
@@ -49,8 +45,6 @@ namespace MuseServer.Hubs
 
         public async Task LeaveRoom(RoomMessage roomMessage)
         {
-            ValidateLazyGenerated();
-
             if (!IsRoomUsed(roomMessage))
             {
                 return;
@@ -69,7 +63,6 @@ namespace MuseServer.Hubs
 
         public async Task ValidateRoom(RoomMessage roomMessage)
         {
-            ValidateLazyGenerated();
             var isRoomValid = _usedRooms.Value.Contains(roomMessage.RoomCode) && _roomSizes.Value.ContainsKey(roomMessage.RoomCode);
             await Clients.Client(Context.ConnectionId).SendAsync("ValidatedRoom", isRoomValid);
         }
@@ -94,14 +87,6 @@ namespace MuseServer.Hubs
             }
 
             return true;
-        }
-
-        private void ValidateLazyGenerated()
-        {
-            if (!_freeRooms.IsValueCreated || !_usedRooms.IsValueCreated || !_roomSizes.IsValueCreated)
-            {
-                throw new Exception("Lazy static data members for _freeRooms, _usedRooms, and _roomSizes not generated.");
-            }
         }
 
     }
