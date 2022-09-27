@@ -40,7 +40,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         Songs.Add("Song 3");
 
         SendChatMessageCommand = new SendChatMessageCommand(this, signalRMuseService);
-        NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(signalRMuseService, navigationStore);
+        NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(this, signalRMuseService, navigationStore);
 
         signalRMuseService.MessageReceived += SignalRMuseService_MessageReceived;
     }
