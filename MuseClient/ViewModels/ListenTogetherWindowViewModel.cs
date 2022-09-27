@@ -42,7 +42,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         SendChatMessageCommand = new SendChatMessageCommand(this, signalRMuseService);
         NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(signalRMuseService, navigationStore);
 
-        signalRMuseService.MessageReceived += museService_MessageReceived;
+        signalRMuseService.MessageReceived += SignalRMuseService_MessageReceived;
     }
 
     public string Username => _username;
@@ -68,7 +68,7 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isConnected, value);
     }
 
-    private void museService_MessageReceived(ChatMessage chatMessage)
+    private void SignalRMuseService_MessageReceived(ChatMessage chatMessage)
     {
         Messages.Add(chatMessage);
         Console.WriteLine(chatMessage.Message);

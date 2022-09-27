@@ -8,12 +8,12 @@ namespace MuseClient.Commands;
 
 public class NavigateToHomeWindowCommand : ICommand
 {
-    private readonly SignalRMuseService _museService;
+    private readonly SignalRMuseService _signalRMuseService;
     private readonly NavigationStore _navigationStore;
 
     public NavigateToHomeWindowCommand(SignalRMuseService museService, NavigationStore navigationStore)
     {
-        _museService = museService;
+        _signalRMuseService = museService;
         _navigationStore = navigationStore;
     }
 
@@ -21,8 +21,8 @@ public class NavigateToHomeWindowCommand : ICommand
 
     public bool CanExecute(object? parameter) => true;
 
-    public async void Execute(object? parameter)
+    public void Execute(object? parameter)
     {
-        _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore, _museService);
+        _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore, _signalRMuseService);
     }
 }

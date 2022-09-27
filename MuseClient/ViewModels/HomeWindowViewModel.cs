@@ -14,6 +14,7 @@ public class HomeWindowViewModel : ViewModelBase
     private readonly NavigationStore _navigationStore;
     private string _username;
     private string _roomCode;
+
     public ICommand CreateRoomCommand { get; }
     public ICommand JoinRoomCommand { get; }
 
@@ -51,7 +52,7 @@ public class HomeWindowViewModel : ViewModelBase
         _navigationStore.CurrentViewModel = new ListenTogetherWindowViewModel(
             navigationStore: _navigationStore,
             signalRMuseService: _signalRMuseService,
-            username: _username,
+            username: Username,
             roomCode: roomMessage.RoomCode);
     }
 
@@ -60,7 +61,7 @@ public class HomeWindowViewModel : ViewModelBase
         _navigationStore.CurrentViewModel = new ListenTogetherWindowViewModel(
             navigationStore: _navigationStore,
             signalRMuseService: _signalRMuseService,
-            username: _username,
+            username: Username,
             roomCode: RoomCode);
     }
 

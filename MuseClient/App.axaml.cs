@@ -24,16 +24,16 @@ public partial class App : Application
             var hubConnection = new HubConnectionBuilder()
                     .WithUrl("http://localhost:5000/museHub")
                     .Build();
-            var museService = new SignalRMuseService(hubConnection);
-            var navigationStore = new NavigationStore(museService);
-            var mainWindowViewModel = new MainWindowViewModel(navigationStore, museService);
+            var signalRMuseService = new SignalRMuseService(hubConnection);
+            var navigationStore = new NavigationStore(signalRMuseService);
+            var mainWindowViewModel = new MainWindowViewModel(navigationStore);
 
             desktop.MainWindow = new MainWindow
             {
                 DataContext = mainWindowViewModel,
             };
 
-            museService.Connect().ContinueWith(task =>
+            signalRMuseService.Connect().ContinueWith(task =>
             {
                 if (task.Exception != null)
                 {
