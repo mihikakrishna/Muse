@@ -10,10 +10,10 @@ public class SendChatMessageCommand : ICommand
     private readonly ListenTogetherWindowViewModel _viewModel;
     private readonly SignalRMuseService _signalRMuseService;
 
-    public SendChatMessageCommand(ListenTogetherWindowViewModel viewModel, SignalRMuseService museService)
+    public SendChatMessageCommand(ListenTogetherWindowViewModel viewModel, SignalRMuseService signalRMuseService)
     {
         _viewModel = viewModel;
-        _signalRMuseService = museService;
+        _signalRMuseService = signalRMuseService;
     }
 
     public event EventHandler? CanExecuteChanged = delegate { };

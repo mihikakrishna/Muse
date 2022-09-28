@@ -13,10 +13,10 @@ public class NavigateToHomeWindowCommand : ICommand
     private readonly SignalRMuseService _signalRMuseService;
     private readonly NavigationStore _navigationStore;
 
-    public NavigateToHomeWindowCommand(ListenTogetherWindowViewModel viewModel, SignalRMuseService museService, NavigationStore navigationStore)
+    public NavigateToHomeWindowCommand(ListenTogetherWindowViewModel viewModel, SignalRMuseService signalRMuseService, NavigationStore navigationStore)
     {
         _viewModel = viewModel;
-        _signalRMuseService = museService;
+        _signalRMuseService = signalRMuseService;
         _navigationStore = navigationStore;
     }
 
