@@ -31,7 +31,6 @@ public class HomeWindowViewModel : ViewModelBase
 
         _signalRMuseService.CreatedRoom += SignalRMuseService_CreatedRoom;
         _signalRMuseService.JoinedRoom += SignalRMuseService_JoinedRoom;
-        _signalRMuseService.LeftRoom += SignalRMuseService_LeftRoom;
         _signalRMuseService.ValidatedRoom += SignalRMuseService_ValidatedRoom;
     }
 
@@ -63,11 +62,6 @@ public class HomeWindowViewModel : ViewModelBase
             signalRMuseService: _signalRMuseService,
             username: Username,
             roomCode: RoomCode);
-    }
-
-    private void SignalRMuseService_LeftRoom()
-    {
-        Console.WriteLine("Left room");
     }
 
     private async void SignalRMuseService_ValidatedRoom(bool isRoomValid)

@@ -10,6 +10,8 @@ using ReactiveUI;
 namespace MuseClient.ViewModels;
 public class ListenTogetherWindowViewModel : ViewModelBase
 {
+    private readonly NavigationStore _navigationStore;
+    private readonly SignalRMuseService _signalRMuseService;
     private readonly string _username;
     private readonly string _roomCode;
     private string _errorMessage;
@@ -26,6 +28,8 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         string username,
         string roomCode)
     {
+        _navigationStore = navigationStore;
+        _signalRMuseService = signalRMuseService;
         _username = username;
         _roomCode = roomCode;
         _errorMessage = string.Empty;
@@ -40,9 +44,10 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         Songs.Add("Song 3");
 
         SendChatMessageCommand = new SendChatMessageCommand(this, signalRMuseService);
-        NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(this, signalRMuseService, navigationStore);
+        NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(this, signalRMuseService);
 
         signalRMuseService.MessageReceived += SignalRMuseService_MessageReceived;
+        signalRMuseService.LeftRoom += SignalRMuseService_LeftRoom;
     }
 
     public string Username => _username;
@@ -74,4 +79,10 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         Console.WriteLine(chatMessage.Message);
     }
 
+    private void SignalRMuseService_LeftRoom()
+    {
+        _navigationStore.CurrentViewModel = new HomeWindowViewModel(
+            navigationStore: _navigationStore,
+            signalRMuseService: _signalRMuseService);
+    }
 }

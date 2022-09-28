@@ -57,8 +57,10 @@ namespace MuseServer.Hubs
                 FreeRooms.Value.Add(roomMessage.RoomCode);
             }
 
-            await Clients.Client(roomMessage.RoomCode).SendAsync("LeftRoom");
+            await Clients.Client(Context.ConnectionId).SendAsync("LeftRoom");
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomMessage.RoomCode);
+            
+            Console.WriteLine("Client has left room " + roomMessage.RoomCode);
         }
 
         public async Task ValidateRoom(RoomMessage roomMessage)
