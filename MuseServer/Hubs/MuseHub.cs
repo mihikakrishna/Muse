@@ -7,23 +7,23 @@ namespace MuseServer.Hubs
     {
 
 
-        private readonly static Lazy<HashSet<string>> _freeRooms
-            = new Lazy<HashSet<string>>(() => new HashSet<string>(Enumerable.Range(0, 9999).ToList().Select(x => x.ToString("D4"))));
+        private readonly static Lazy<HashSet<string>> FreeRooms
+            = new(() => new HashSet<string>(Enumerable.Range(0, 9999).ToList().Select(x => x.ToString("D4"))));
 
-        private readonly static Lazy<HashSet<string>> _usedRooms
-            = new Lazy<HashSet<string>>(() => new HashSet<string>());
+        private readonly static Lazy<HashSet<string>> UsedRooms
+            = new(() => new HashSet<string>());
 
-        private readonly static Lazy<Dictionary<string, int>> _roomSizes
-            = new Lazy<Dictionary<string, int>>(() => new Dictionary<string, int>());
+        private readonly static Lazy<Dictionary<string, int>> RoomSizes
+            = new(() => new Dictionary<string, int>());
 
         public async Task CreateRoom()
         {
             var random = new Random();
-            var roomCode = _freeRooms.Value.ElementAt(random.Next(_freeRooms.Value.Count));
+            var roomCode = FreeRooms.Value.ElementAt(random.Next(FreeRooms.Value.Count));
 
-            _freeRooms.Value.Remove(roomCode);
-            _usedRooms.Value.Add(roomCode);
-            _roomSizes.Value[roomCode] = 1;
+            FreeRooms.Value.Remove(roomCode);
+            UsedRooms.Value.Add(roomCode);
+            RoomSizes.Value[roomCode] = 1;
 
             var createdRoomMessage = new RoomMessage(roomCode);
 
@@ -38,7 +38,7 @@ namespace MuseServer.Hubs
                 return;
             }
 
-            _roomSizes.Value[roomMessage.RoomCode]++;
+            RoomSizes.Value[roomMessage.RoomCode]++;
             await Clients.Client(Context.ConnectionId).SendAsync("JoinedRoom");
             await Groups.AddToGroupAsync(Context.ConnectionId, roomMessage.RoomCode);
         }
@@ -50,11 +50,11 @@ namespace MuseServer.Hubs
                 return;
             }
 
-            _roomSizes.Value[roomMessage.RoomCode]--;
-            if (_roomSizes.Value[roomMessage.RoomCode] == 0)
+            RoomSizes.Value[roomMessage.RoomCode]--;
+            if (RoomSizes.Value[roomMessage.RoomCode] == 0)
             {
-                _usedRooms.Value.Remove(roomMessage.RoomCode);
-                _freeRooms.Value.Add(roomMessage.RoomCode);
+                UsedRooms.Value.Remove(roomMessage.RoomCode);
+                FreeRooms.Value.Add(roomMessage.RoomCode);
             }
 
             await Clients.Client(roomMessage.RoomCode).SendAsync("LeftRoom");
@@ -63,7 +63,7 @@ namespace MuseServer.Hubs
 
         public async Task ValidateRoom(RoomMessage roomMessage)
         {
-            var isRoomValid = _usedRooms.Value.Contains(roomMessage.RoomCode) && _roomSizes.Value.ContainsKey(roomMessage.RoomCode);
+            var isRoomValid = UsedRooms.Value.Contains(roomMessage.RoomCode) && RoomSizes.Value.ContainsKey(roomMessage.RoomCode);
             await Clients.Client(Context.ConnectionId).SendAsync("ValidatedRoom", isRoomValid);
         }
 
@@ -74,15 +74,15 @@ namespace MuseServer.Hubs
 
         private bool IsRoomUsed(RoomMessage roomMessage)
         {
-            if (!_usedRooms.Value.Contains(roomMessage.RoomCode))
+            if (!UsedRooms.Value.Contains(roomMessage.RoomCode))
             {
-                Console.WriteLine($"Item [{roomMessage.RoomCode}] not found in _usedRooms");
+                Console.WriteLine($"Item [{roomMessage.RoomCode}] not found in UsedRooms");
                 return false;
             }
 
-            if (!_roomSizes.Value.ContainsKey(roomMessage.RoomCode))
+            if (!RoomSizes.Value.ContainsKey(roomMessage.RoomCode))
             {
-                Console.WriteLine($"Key [{roomMessage.RoomCode}] not found in _roomSizes");
+                Console.WriteLine($"Key [{roomMessage.RoomCode}] not found in RoomSizes");
                 return false;
             }
 
