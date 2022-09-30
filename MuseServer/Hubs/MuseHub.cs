@@ -7,13 +7,13 @@ namespace MuseServer.Hubs
     {
 
 
-        private readonly static Lazy<HashSet<string>> FreeRooms
+        private static readonly Lazy<HashSet<string>> FreeRooms
             = new(() => new HashSet<string>(Enumerable.Range(0, 9999).ToList().Select(x => x.ToString("D4"))));
 
-        private readonly static Lazy<HashSet<string>> UsedRooms
+        private static readonly Lazy<HashSet<string>> UsedRooms
             = new(() => new HashSet<string>());
 
-        private readonly static Lazy<Dictionary<string, int>> RoomSizes
+        private static readonly Lazy<Dictionary<string, int>> RoomSizes
             = new(() => new Dictionary<string, int>());
 
         public async Task CreateRoom()
