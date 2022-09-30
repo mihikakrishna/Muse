@@ -1,4 +1,5 @@
 using System;
+using MuseClient.Services;
 using MuseClient.ViewModels;
 using ReactiveUI;
 
@@ -9,9 +10,9 @@ public class NavigationStore : StoreBase
     private ViewModelBase _currentViewModel;
     public event Action? CurrentViewModelIsChanged;
 
-    public NavigationStore()
+    public NavigationStore(SignalRMuseService signalRMuseService)
     {
-        _currentViewModel = new HomeWindowViewModel(this);
+        _currentViewModel = new HomeWindowViewModel(this, signalRMuseService);
     }
 
     public ViewModelBase CurrentViewModel

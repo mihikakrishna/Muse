@@ -1,20 +1,20 @@
 using System;
 using System.Windows.Input;
 using MuseClient.Services;
-using MuseClient.Stores;
 using MuseClient.ViewModels;
+using MuseDomain.Models;
 
 namespace MuseClient.Commands;
 
 public class NavigateToHomeWindowCommand : ICommand
 {
-    private readonly SignalRChatService _chatService;
-    private readonly NavigationStore _navigationStore;
+    private readonly ListenTogetherWindowViewModel _viewModel;
+    private readonly SignalRMuseService _signalRMuseService;
 
-    public NavigateToHomeWindowCommand(SignalRChatService chatService, NavigationStore navigationStore)
+    public NavigateToHomeWindowCommand(ListenTogetherWindowViewModel viewModel, SignalRMuseService signalRMuseService)
     {
-        _chatService = chatService;
-        _navigationStore = navigationStore;
+        _viewModel = viewModel;
+        _signalRMuseService = signalRMuseService;
     }
 
     public event EventHandler? CanExecuteChanged = delegate { };
@@ -23,7 +23,7 @@ public class NavigateToHomeWindowCommand : ICommand
 
     public async void Execute(object? parameter)
     {
-        await _chatService.Disconnect();
-        _navigationStore.CurrentViewModel = new HomeWindowViewModel(_navigationStore);
+        var roomMessage = new RoomMessage(roomCode: _viewModel.RoomCode);
+        await _signalRMuseService.LeaveRoom(roomMessage);
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Microsoft.AspNetCore.SignalR.Client;
 using MuseClient.Commands;
 using MuseClient.Services;
 using MuseClient.Stores;
@@ -11,6 +10,8 @@ using ReactiveUI;
 namespace MuseClient.ViewModels;
 public class ListenTogetherWindowViewModel : ViewModelBase
 {
+    private readonly NavigationStore _navigationStore;
+    private readonly SignalRMuseService _signalRMuseService;
     private readonly string _username;
     private readonly string _roomCode;
     private string _errorMessage;
@@ -21,39 +22,14 @@ public class ListenTogetherWindowViewModel : ViewModelBase
     public ICommand SendChatMessageCommand { get; }
     public ICommand NavigateToHomeWindowCommand { get; }
 
-
-    public static ListenTogetherWindowViewModel CreateConnectedViewModel(
+    public ListenTogetherWindowViewModel(
         NavigationStore navigationStore,
+        SignalRMuseService signalRMuseService,
         string username,
         string roomCode)
     {
-        var hubConnection = new HubConnectionBuilder()
-                    .WithUrl("http://localhost:5000/chatHub")
-                    .Build();
-        var chatService = new SignalRChatService(hubConnection);
-        var viewModel = new ListenTogetherWindowViewModel(
-            navigationStore,
-            chatService,
-            username,
-            roomCode);
-
-        chatService.Connect().ContinueWith(task =>
-        {
-            if (task.Exception != null)
-            {
-                Console.WriteLine("An exception has occured");
-            }
-        });
-
-        return viewModel;
-    }
-
-    private ListenTogetherWindowViewModel(
-        NavigationStore navigationStore,
-        SignalRChatService chatService,
-        string username,
-        string roomCode)
-    {
+        _navigationStore = navigationStore;
+        _signalRMuseService = signalRMuseService;
         _username = username;
         _roomCode = roomCode;
         _errorMessage = string.Empty;
@@ -67,10 +43,11 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         Songs.Add("Song 2");
         Songs.Add("Song 3");
 
-        SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
-        NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(chatService, navigationStore);
+        SendChatMessageCommand = new SendChatMessageCommand(this, signalRMuseService);
+        NavigateToHomeWindowCommand = new NavigateToHomeWindowCommand(this, signalRMuseService);
 
-        chatService.MessageReceived += ChatService_MessageReceived;
+        signalRMuseService.MessageReceived += SignalRMuseService_MessageReceived;
+        signalRMuseService.LeftRoom += SignalRMuseService_LeftRoom;
     }
 
     public string Username => _username;
@@ -96,10 +73,16 @@ public class ListenTogetherWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isConnected, value);
     }
 
-    private void ChatService_MessageReceived(ChatMessage chatMessage)
+    private void SignalRMuseService_MessageReceived(ChatMessage chatMessage)
     {
         Messages.Add(chatMessage);
         Console.WriteLine(chatMessage.Message);
     }
 
+    private void SignalRMuseService_LeftRoom()
+    {
+        _navigationStore.CurrentViewModel = new HomeWindowViewModel(
+            navigationStore: _navigationStore,
+            signalRMuseService: _signalRMuseService);
+    }
 }
